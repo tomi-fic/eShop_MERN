@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import RatingStars from '../components/RatingStars'
-import products from '../products'
+import axios from 'axios'
 
 const ProductView = (props) => {
-  // will be replaced by BE logic
-  const prod = products.find((p) => p._id === props.match.params.id)
+  const [product, setProduct] = useState({})
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const res = await axios.get(`/product/${props.match.params.id}`)
+      setProduct(res.data)
+    }
+    fetchProduct()
+  }, [])
 
   return (
     <>
@@ -15,19 +22,22 @@ const ProductView = (props) => {
       </Link>
       <Row>
         <Col md={6}>
-          <Image src={prod.image} alt={prod.name} fluid />
+          <Image src={product.image} alt={product.name} fluid />
         </Col>
         <Col md={3}>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h4>{prod.name}</h4>
+              <h4>{product.name}</h4>
             </ListGroup.Item>
             <ListGroup.Item>
-              <RatingStars rating={prod.rating} numReviews={prod.numReviews} />
+              <RatingStars
+                rating={product.rating}
+                numReviews={product.numReviews}
+              />
             </ListGroup.Item>
-            <ListGroup.Item>Price: {prod.price}€</ListGroup.Item>
+            <ListGroup.Item>Price: {product.price}€</ListGroup.Item>
             <ListGroup.Item>
-              <div style={{ textAlign: 'center' }}>{prod.description}</div>
+              <div style={{ textAlign: 'center' }}>{product.description}</div>
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -38,7 +48,7 @@ const ProductView = (props) => {
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>{prod.price}€</strong>
+                    <strong>{product.price}€</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -46,8 +56,8 @@ const ProductView = (props) => {
                 <Row>
                   <Col>Stock:</Col>
                   <Col>
-                    {prod.countInStock > 0
-                      ? `${prod.countInStock} pcs`
+                    {product.countInStock > 0
+                      ? `${product.countInStock} pcs`
                       : 'Out of Stock'}
                   </Col>
                 </Row>
@@ -56,7 +66,7 @@ const ProductView = (props) => {
                 <Button
                   className='btn-block'
                   type='button'
-                  disabled={prod.countInStock === 0}
+                  disabled={product.countInStock === 0}
                 >
                   Add to Cart
                 </Button>

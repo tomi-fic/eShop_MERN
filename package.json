@@ -1,0 +1,21 @@
+{
+  "name": "eshop",
+  "version": "1.0.0",
+  "description": "eshop app",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomi-fic/eShop_MERN.git"
+  },
+  "author": "Tomas Ficek",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
