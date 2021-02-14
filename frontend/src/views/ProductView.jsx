@@ -13,7 +13,7 @@ const ProductView = (props) => {
       setProduct(res.data)
     }
     fetchProduct()
-  }, [])
+  }, [props.match])
 
   return (
     <>
