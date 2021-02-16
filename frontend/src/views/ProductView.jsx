@@ -9,7 +9,7 @@ const ProductView = (props) => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await axios.get(`/product/${props.match.params.id}`)
+      const res = await axios.get(`/products/${props.match.params.id}`)
       setProduct(res.data)
     }
     fetchProduct()

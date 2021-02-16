@@ -10,6 +10,9 @@ node_modules/
 # production
 /build
 
+# default data import 
+/backend/data
+
 # misc
 .DS_Store
 .env
