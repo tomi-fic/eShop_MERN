@@ -4,10 +4,13 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import { productListReducer } from './reducers/productReducers.js'
+import {
+  productListReducer,
+  productDetailReducer,
+} from './reducers/productReducers.js'
 
-import './bootstrap.min.css'
-import './index.css'
+import './assets/css/bootstrap.min.css'
+import './assets/css/index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 // DEV
@@ -15,6 +18,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 const rootReducer = combineReducers({
   productList: productListReducer,
+  productDetail: productDetailReducer,
 })
 const initialState = {}
 const middleware = [thunkMiddleware]
