@@ -29,9 +29,9 @@ const RatingStars = ({ rating, numReviews }) => {
   )
 }
 
-RatingStars.propTypes = {
-  rating: PropTypes.number.isRequired,
-  numReviews: PropTypes.number.isRequired,
-}
+// RatingStars.propTypes = {
+//   rating: PropTypes.number.isRequired,
+//   numReviews: PropTypes.number.isRequired,
+// }
 
 export default RatingStars

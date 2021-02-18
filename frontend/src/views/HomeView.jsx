@@ -9,7 +9,6 @@ import Message from '../components/Message'
 const HomeView = () => {
   const dispatch = useDispatch()
   const productList = useSelector((state) => state.productList)
-  console.log(productList)
 
   useEffect(() => {
     dispatch(listProducts())

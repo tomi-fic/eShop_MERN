@@ -36,7 +36,6 @@ export const productDetailReducer = (
     case PRODUCT_DETAIL_PENDING:
       return {
         isPending: true,
-        ...state,
       }
     case PRODUCT_DETAIL_SUCCESS:
       return {

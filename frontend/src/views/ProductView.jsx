@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { productDetails } from '../actions/productActions.js'
+import { addToCart } from '../actions/cartActions.js'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import RatingStars from '../components/RatingStars'
@@ -20,6 +21,7 @@ const ProductView = (props) => {
   }, [dispatch, props.match.params.id])
 
   const addToCartHandler = () => {
+    dispatch(addToCart(product, qty))
     props.history.push(`/cart/${props.match.params.id}?qty=${qty}`)
   }
 
