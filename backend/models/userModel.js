@@ -27,8 +27,19 @@ const userSchema = mongoose.Schema(
   }
 )
 
+//mongoose - create default fn for decrypted password
 userSchema.methods.matchBcryptPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password)
 }
+
+//mongoose - default trigger middleware for hashing password for insert
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next()
+  }
+
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+})
 
 export const User = mongoose.model('User', userSchema)
