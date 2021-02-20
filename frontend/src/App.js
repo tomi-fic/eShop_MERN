@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import HomeView from './views/HomeView'
 import ProductView from './views/ProductView'
 import CartView from './views/CartView'
+import LoginView from './views/LoginView'
 import { Container } from 'react-bootstrap'
 import styled from 'styled-components'
 
@@ -22,6 +23,7 @@ const App = () => {
           <Route path='/' component={HomeView} exact />
           <Route path='/product/:id' component={ProductView} />
           <Route path='/cart' component={CartView} />
+          <Route path='/login' component={LoginView} />
         </Container>
       </MainWrapper>
       <Footer />

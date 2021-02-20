@@ -1,11 +1,31 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Form, Card, Button } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import Message from '../components/Message'
 import QuantityPicker from '../components/QuantityPicker'
 import { removeFromCart, addToCart } from '../actions/cartActions.js'
 import styled from 'styled-components'
+
+const Theme = {
+  StyledButton: styled(Button)`
+    .btn-default:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  `,
+  H1: styled.h1`
+    font-size: 2rem;
+    padding: 1rem 0;
+  `,
+  H2: styled.h2`
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+  `,
+  Card: styled(Card)`
+    margin-top: 1rem;
+  `,
+}
 
 const CartView = (props) => {
   const cart = useSelector((state) => state.cart)
@@ -18,26 +38,6 @@ const CartView = (props) => {
   const checkoutHandler = () => {
     props.history.push('/login?redirect=shipping')
     console.log('checkout')
-  }
-
-  const Theme = {
-    StyledButton: styled(Button)`
-      .btn-default:focus {
-        outline: none;
-        box-shadow: none;
-      }
-    `,
-    H1: styled.h1`
-      font-size: 2rem;
-      padding: 1rem 0;
-    `,
-    H2: styled.h2`
-      font-size: 1.5rem;
-      padding: 0.5rem 0;
-    `,
-    Card: styled(Card)`
-      margin-top: 1rem;
-    `,
   }
 
   return (

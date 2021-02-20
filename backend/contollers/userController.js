@@ -43,7 +43,7 @@ export const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email: email })
-  const isValidPassword = await user.matchBcryptPassword(password)
+  const isValidPassword = password && (await user.matchBcryptPassword(password))
 
   if (user && isValidPassword) {
     res.json({
