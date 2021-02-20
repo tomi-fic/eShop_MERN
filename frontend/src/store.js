@@ -5,7 +5,10 @@ import {
   productDetailReducer,
 } from './reducers/productReducers.js'
 import { cartReducer } from './reducers/cartReducers.js'
-import { userLoginReducer } from './reducers/userReducers.js'
+import {
+  userLoginReducer,
+  userRegisterReducer,
+} from './reducers/userReducers.js'
 // DEV
 import { composeWithDevTools } from 'redux-devtools-extension'
 
@@ -14,6 +17,7 @@ const rootReducer = combineReducers({
   productDetail: productDetailReducer,
   cart: cartReducer,
   userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
 })
 const initialState = {
   cart: {

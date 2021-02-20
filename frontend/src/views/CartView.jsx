@@ -23,7 +23,7 @@ const Theme = {
     padding: 0.5rem 0;
   `,
   Card: styled(Card)`
-    margin-top: 1rem;
+    margin-top: 2rem;
   `,
 }
 
@@ -73,7 +73,7 @@ const CartView = (props) => {
                       product={product}
                     />
                   </Col>
-                  <Col>
+                  <Col md={2}>
                     <Theme.StyledButton
                       type='button'
                       variant='light'
@@ -100,13 +100,15 @@ const CartView = (props) => {
                 )}
                 ) items
               </Theme.H2>
-              {cart.cartItems
-                .reduce(
-                  (increment, item) => increment + item.qty * item.price,
-                  0
-                )
-                .toFixed(2)}
-              €
+              <strong>
+                {cart.cartItems
+                  .reduce(
+                    (increment, item) => increment + item.qty * item.price,
+                    0
+                  )
+                  .toFixed(2)}
+                €
+              </strong>
             </ListGroup.Item>
             <ListGroup.Item>
               <Button
