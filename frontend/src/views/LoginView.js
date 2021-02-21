@@ -14,12 +14,13 @@ const LoginView = ({ location, history }) => {
   const dispatch = useDispatch()
   const { isPending, error, userInfo } = useSelector((state) => state.userLogin)
 
-  const redirect = location.search ? location.search.split('=')[1] : null
+  const redirect = location.search ? location.search.split('=')[1] : '/'
 
   //if signed than redirect logged user on previous page
   useEffect(() => {
     if (userInfo) {
-      history.goBack()
+      // history.goBack()
+      history.push(redirect)
     }
   }, [history, userInfo, redirect])
 

@@ -7,6 +7,7 @@ import ProductView from './views/ProductView'
 import CartView from './views/CartView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
+import ProfileView from './views/ProfileView'
 import { Container } from 'react-bootstrap'
 import styled from 'styled-components'
 
@@ -26,6 +27,7 @@ const App = () => {
           <Route path='/cart' component={CartView} />
           <Route path='/login' component={LoginView} />
           <Route path='/register' component={RegisterView} />
+          <Route path='/profile' component={ProfileView} />
         </Container>
       </MainWrapper>
       <Footer />

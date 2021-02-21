@@ -19,12 +19,11 @@ const RegisterView = ({ location, history }) => {
     (state) => state.userRegister
   )
 
-  const redirect = location.search ? location.search.split('=')[1] : null
+  const redirect = location.search ? location.search.split('=')[1] : '/'
 
-  //if signed than redirect logged user on previous page
   useEffect(() => {
     if (userInfo) {
-      history.goBack()
+      history.push(redirect)
     }
   }, [history, userInfo, redirect])
 
@@ -92,7 +91,7 @@ const RegisterView = ({ location, history }) => {
         <Col>
           {`Have an Account? `}
           <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-            Register
+            Sign in
           </Link>
         </Col>
       </Row>
