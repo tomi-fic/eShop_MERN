@@ -9,6 +9,7 @@ import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import ProfileView from './views/ProfileView'
 import ShippingView from './views/ShippingView'
+import PaymentView from './views/PaymentView'
 import { Container } from 'react-bootstrap'
 import styled from 'styled-components'
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path='/register' component={RegisterView} />
           <Route path='/profile' component={ProfileView} />
           <Route path='/shipping' component={ShippingView} />
+          <Route path='/payment' component={PaymentView} />
         </Container>
       </MainWrapper>
       <Footer />
