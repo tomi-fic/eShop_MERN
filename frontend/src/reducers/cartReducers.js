@@ -1,4 +1,8 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/reducerConstants'
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+} from '../constants/reducerConstants'
 
 const checkIfInCart = (cartList, product) => {
   let isInCart = false
@@ -11,7 +15,10 @@ const checkIfInCart = (cartList, product) => {
   return isInCart
 }
 
-export const cartReducer = (state = { cartItems: [] }, action) => {
+export const cartReducer = (
+  state = { cartItems: [], shippingAddress: {} },
+  action
+) => {
   switch (action.type) {
     case CART_ADD_ITEM:
       if (checkIfInCart(state.cartItems, action.payload)) {
@@ -36,6 +43,12 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         cartItems: state.cartItems.filter(
           (item) => item._id !== action.payload._id
         ),
+      }
+
+    case CART_SAVE_SHIPPING_ADDRESS:
+      return {
+        ...state,
+        shippingAdress: action.payload,
       }
 
     default:

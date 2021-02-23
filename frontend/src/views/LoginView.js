@@ -16,7 +16,7 @@ const LoginView = ({ location, history }) => {
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
-  //if signed than redirect logged user on previous page
+  //if signed than redirect logged user on previous page or to redirect
   useEffect(() => {
     if (userInfo) {
       // history.goBack()

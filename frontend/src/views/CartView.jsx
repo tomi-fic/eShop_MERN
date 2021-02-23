@@ -37,7 +37,6 @@ const CartView = (props) => {
 
   const checkoutHandler = () => {
     props.history.push('/login?redirect=shipping')
-    console.log('checkout')
   }
 
   return (
