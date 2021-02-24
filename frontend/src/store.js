@@ -11,6 +11,7 @@ import {
   // userDetailsReducer,
   userUpdateProfileReducer,
 } from './reducers/userReducers.js'
+import { orderCreateReducer } from './reducers/orderReducers.js'
 // DEV
 import { composeWithDevTools } from 'redux-devtools-extension'
 
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   userRegister: userRegisterReducer,
   // userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  orderCreate: orderCreateReducer,
 })
 const initialState = {
   cart: {
