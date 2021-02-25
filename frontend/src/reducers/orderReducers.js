@@ -1,4 +1,8 @@
 import {
+  ORDER_BY_USER_FAIL,
+  ORDER_BY_USER_REQUEST,
+  ORDER_BY_USER_RESET,
+  ORDER_BY_USER_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
@@ -76,6 +80,35 @@ export const orderPayReducer = (state = {}, action) => {
       }
     case ORDER_PAY_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+export const orderByUserReducer = (
+  state = { isPending: false, orders: [] },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_BY_USER_REQUEST:
+      return {
+        isPending: true,
+      }
+    case ORDER_BY_USER_SUCCESS:
+      return {
+        isPending: false,
+        orders: action.payload,
+      }
+    case ORDER_BY_USER_FAIL:
+      return {
+        isPending: false,
+        error: action.payload,
+      }
+    case ORDER_BY_USER_RESET:
+      return {
+        isPending: false,
+        orders: [],
+      }
     default:
       return state
   }

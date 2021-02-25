@@ -12,6 +12,7 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  ORDER_BY_USER_RESET,
 } from '../constants/reducerConstants.js'
 import axios from 'axios'
 
@@ -62,6 +63,7 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
+  dispatch({ type: ORDER_BY_USER_RESET })
 }
 //
 //

@@ -9,15 +9,19 @@ import Loader from '../components/Loader'
 import { getOrderDetails, payOrder } from '../actions/orderActions.js'
 import { ORDER_PAY_RESET } from '../constants/reducerConstants.js'
 
-const OrderView = ({ match }) => {
+const OrderView = ({ history, match }) => {
   const dispatch = useDispatch()
   const [isSdkReady, setIsSdkReady] = useState(false)
   const { order, isPending, error } = useSelector((state) => state.orderDetails)
+  const { userInfo } = useSelector((state) => state.userLogin)
   const { success: successPay, isPending: isPendingPay } = useSelector(
     (state) => state.orderPay
   )
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
     const addPaypalScript = async () => {
       const { data: clientId } = await axios.get('/config/paypal')
       const script = document.createElement('script')

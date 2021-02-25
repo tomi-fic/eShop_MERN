@@ -1,4 +1,7 @@
 import {
+  ORDER_BY_USER_FAIL,
+  ORDER_BY_USER_REQUEST,
+  ORDER_BY_USER_SUCCESS,
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
@@ -93,6 +96,29 @@ export const payOrder = (orderId, payRes) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_PAY_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const getUserOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_BY_USER_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const { data } = await axios.get(`/orders/myorders`, config(userInfo.token))
+    dispatch({
+      type: ORDER_BY_USER_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_BY_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

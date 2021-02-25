@@ -81,3 +81,13 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
 
   console.log('Route:', req.originalUrl.green)
 })
+
+// @desc    Get logged in user orders
+// @route   GET /orders/myorders
+// @access  Private
+export const getUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id })
+  res.json(orders)
+
+  console.log('Route:', req.originalUrl.green)
+})

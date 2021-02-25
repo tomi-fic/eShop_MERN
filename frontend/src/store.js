@@ -15,6 +15,7 @@ import {
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
+  orderByUserReducer,
 } from './reducers/orderReducers.js'
 // DEV
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  orderByUser: orderByUserReducer,
 })
 const initialState = {
   cart: {
