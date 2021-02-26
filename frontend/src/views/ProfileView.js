@@ -6,6 +6,18 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { updateUserProfile } from '../actions/userActions.js'
 import { getUserOrders } from '../actions/orderActions.js'
+import styled from 'styled-components'
+
+const Theme = {
+  TD: styled.td`
+    text-align: center;
+    vertical-align: middle;
+  `,
+  TH: styled.th`
+    text-align: center;
+    vertical-align: middle;
+  `,
+}
 
 const ProfileView = ({ location, history }) => {
   const [email, setEmail] = useState('')
@@ -126,45 +138,51 @@ const ProfileView = ({ location, history }) => {
           <Loader />
         ) : orderListError ? (
           <Message variant='danger'>{orderListError}</Message>
+        ) : orderList.length === 0 ? (
+          <Message>You have no orders</Message>
         ) : (
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
+                <Theme.TH>ID</Theme.TH>
+                <Theme.TH>DATE</Theme.TH>
+                <Theme.TH>TOTAL</Theme.TH>
+                <Theme.TH>PAID</Theme.TH>
+                <Theme.TH>DELIVERED</Theme.TH>
+                <Theme.TH></Theme.TH>
               </tr>
             </thead>
             <tbody>
               {orderList.map((order, key) => (
                 <tr key={key}>
-                  <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice.toFixed(2)}€</td>
-                  <td>
+                  <Theme.TD>{order._id}</Theme.TD>
+                  <Theme.TD>{order.createdAt.substring(0, 10)}</Theme.TD>
+                  <Theme.TD>{order.totalPrice.toFixed(2)}€</Theme.TD>
+                  <Theme.TD>
                     {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
+                      <Button variant='success' className='btn-sm' disabled>
+                        {order.paidAt.substring(0, 10)}
+                      </Button>
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
                     )}
-                  </td>
-                  <td>
+                  </Theme.TD>
+                  <Theme.TD>
                     {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
+                      <Button variant='success' className='btn-sm' disabled>
+                        {order.deliveredAt.substring(0, 10)}
+                      </Button>
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
                     )}
-                  </td>
-                  <td>
+                  </Theme.TD>
+                  <Theme.TD>
                     <LinkContainer to={`orders/${order._id}`}>
                       <Button variant='light' className='btn-sm'>
                         Details
                       </Button>
                     </LinkContainer>
-                  </td>
+                  </Theme.TD>
                 </tr>
               ))}
             </tbody>

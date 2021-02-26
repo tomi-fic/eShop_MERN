@@ -10,6 +10,8 @@ import {
   userRegisterReducer,
   // userDetailsReducer,
   userUpdateProfileReducer,
+  userListReducer,
+  userDeleteReducer,
 } from './reducers/userReducers.js'
 import {
   orderCreateReducer,
@@ -32,6 +34,8 @@ const rootReducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   orderByUser: orderByUserReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
 })
 const initialState = {
   cart: {
