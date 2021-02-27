@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Modal, Form } from 'react-bootstrap'
+import { Button, Modal, Form, Col, Row } from 'react-bootstrap'
 // import Message from '../components/Message'
 // import Loader from '../components/Loader'
 import {
@@ -16,31 +15,32 @@ const UserEditModal = ({ show, handleClose, user }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [isAdmin, setIsAdmin] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
 
   React.useEffect(() => {
     setName(user.name)
     setEmail(user.email)
+    setIsAdmin(user.isAdmin)
   }, [user])
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
     if (password === confirmPassword) {
-      if (user._id === userInfo._id) {
-        console.log('userEditModals USER UPDATE', user)
-        // pre pripad ak user modifikuje sam seba
-        // dispatch(
-        //   updateUserProfile({
-        //     id: user._id,
-        //     name,
-        //     email,
-        //     password,
-        //     token: userInfo.token,
-        //   })
-        // )
+      if (!userInfo.isAdmin) {
+        console.log('ups tu som')
+        dispatch(
+          updateUserProfile({
+            id: user._id,
+            name,
+            email,
+            password,
+            token: userInfo.token,
+          })
+        )
       } else {
-        console.log('userEditModals ADMIN UPDATE', user)
+        console.log('user + admin', user, isAdmin)
         dispatch(
           updateUserProfileByAdmin({
             userToEdit: {
@@ -48,6 +48,7 @@ const UserEditModal = ({ show, handleClose, user }) => {
               name,
               email,
               password,
+              isAdmin,
             },
           })
         )
@@ -82,6 +83,17 @@ const UserEditModal = ({ show, handleClose, user }) => {
               onChange={(e) => setEmail(e.target.value)}
             ></Form.Control>
           </Form.Group>
+          <Form.Group controlId='isadmin' as={Row}>
+            {/* <Form.Label column sm={1}></Form.Label> */}
+            <Col sm={4} style={{ padding: '6px', marginLeft: '10px' }}>
+              <Form.Check
+                type='checkbox'
+                checked={isAdmin}
+                label=' Is admin? '
+                onChange={(e) => setIsAdmin(!isAdmin)}
+              ></Form.Check>
+            </Col>
+          </Form.Group>
           <Form.Group controlId='password'>
             <Form.Label>New Password</Form.Label>
             <Form.Control
@@ -106,13 +118,7 @@ const UserEditModal = ({ show, handleClose, user }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant='secondary'
-          disabled={
-            userInfo && userInfo.name === name && userInfo.email === email
-          }
-          onClick={handleClose}
-        >
+        <Button variant='secondary' onClick={handleClose}>
           Close
         </Button>
         <Button
@@ -121,6 +127,12 @@ const UserEditModal = ({ show, handleClose, user }) => {
             onSubmitHandler(e)
             handleClose()
           }}
+          disabled={
+            user &&
+            user.name === name &&
+            user.email === email &&
+            user.isAdmin === isAdmin
+          }
         >
           Edit User
         </Button>

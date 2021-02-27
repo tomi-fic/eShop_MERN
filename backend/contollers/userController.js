@@ -118,15 +118,16 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 })
 
 // @desc    UPDATE user profile by ADMIN
-// @route   PUT /users/admin/profile
+// @route   PUT /users/:id
 // @access  Private/Admin
 export const updateUserProfileByAdmin = asyncHandler(async (req, res) => {
-  const oldUser = await User.findById(req.body.userToEdit.id)
+  const oldUser = await User.findById(req.params.id)
   const newUser = req.body.userToEdit
 
   if (oldUser) {
     oldUser.name = newUser.name || oldUser.name
     oldUser.email = newUser.email || oldUser.email
+    oldUser.isAdmin = newUser.isAdmin
     if (newUser.password) {
       oldUser.password = newUser.password
     }
@@ -137,7 +138,6 @@ export const updateUserProfileByAdmin = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
     })
   } else {
     res.status(404)

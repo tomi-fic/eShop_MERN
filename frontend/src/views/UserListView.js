@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Modal, Form } from 'react-bootstrap'
+import { Table, Button } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import UserEditModal from '../components/modals/userEditModal'
@@ -12,6 +11,9 @@ const UserListView = ({ history }) => {
   const { isPending, error, users } = useSelector((state) => state.userList)
   const { userInfo } = useSelector((state) => state.userLogin)
   const { success: successDelete } = useSelector((state) => state.userDelete)
+  const { success: successEdit } = useSelector(
+    (state) => state.userUpdateProfile
+  )
 
   const [showModal, setShowModal] = useState(false)
   const [userToEdit, setUserToEdit] = useState({})
@@ -28,7 +30,7 @@ const UserListView = ({ history }) => {
     } else {
       dispatch(listUsers())
     }
-  }, [dispatch, userInfo, history, successDelete])
+  }, [dispatch, userInfo, history, successDelete, successEdit])
 
   const onDeleteHandler = (user) => {
     if (window.confirm(`Are you sure to delete ${user.name} ?`)) {

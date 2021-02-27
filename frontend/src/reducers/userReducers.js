@@ -16,6 +16,7 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  USER_UPDATE_PROFILE_RESET,
   // USER_DETAILS_SUCCESS,
   // USER_DETAILS_FAIL,
   // USER_DETAILS_REQUEST,
@@ -104,6 +105,10 @@ export const userUpdateProfileReducer = (state = {}, action) => {
         isPending: false,
         success: false,
         error: action.payload,
+      }
+    case USER_UPDATE_PROFILE_RESET:
+      return {
+        user: {},
       }
     default:
       return state
