@@ -6,8 +6,6 @@ import { Product } from '../models/productModel.js'
 // @access  Public
 export const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({})
-  console.log('Route:', req.originalUrl.green)
-  // throw new Error('some Error')
   res.json(products)
 })
 
@@ -16,7 +14,19 @@ export const getProducts = asyncHandler(async (req, res) => {
 // @access  Public
 export const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
-  console.log('Route:', req.originalUrl.green)
+  if (product) {
+    res.json(product)
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
+// @desc    Delete a product
+// @route   DELETE /products/:id
+// @access  Private/Admin
+export const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
   if (product) {
     res.json(product)
   } else {

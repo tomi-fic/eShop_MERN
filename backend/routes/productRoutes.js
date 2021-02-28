@@ -1,5 +1,6 @@
 import express from 'express'
 import { getProducts, getProductById } from '../contollers/productController.js'
+import { protect, admin } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
