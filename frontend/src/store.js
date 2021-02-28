@@ -29,13 +29,13 @@ const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   // userDetails: userDetailsReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
   userUpdateProfile: userUpdateProfileReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   orderByUser: orderByUserReducer,
-  userList: userListReducer,
-  userDelete: userDeleteReducer,
 })
 const initialState = {
   cart: {

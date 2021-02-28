@@ -22,10 +22,20 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isEnabled: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
     image: {
       type: String,
       required: true,
     },
+    gallery: [
+      {
+        image: { type: String, required: true },
+      },
+    ],
     brand: {
       type: String,
       required: true,
@@ -54,6 +64,11 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     countInStock: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    discount: {
       type: Number,
       required: true,
       default: 0,

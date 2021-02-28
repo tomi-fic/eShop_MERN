@@ -24,7 +24,7 @@ const RatingStars = ({ rating, numReviews }) => {
         starSpacing='1px'
         isSelectable='true'
       />
-      <Span>{numReviews} reviews</Span>
+      {numReviews && <Span>{numReviews} reviews</Span>}
     </div>
   )
 }

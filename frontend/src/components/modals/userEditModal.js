@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Modal, Form, Col, Row } from 'react-bootstrap'
-// import Message from '../components/Message'
+import Message from '../../components/Message'
 // import Loader from '../components/Loader'
 import {
   updateUserProfile,
@@ -19,17 +19,19 @@ const UserEditModal = ({ show, handleClose, user }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     setName(user.name)
     setEmail(user.email)
     setIsAdmin(user.isAdmin)
-  }, [user])
+    setPassword('')
+    setConfirmPassword('')
+    setMessage(null)
+  }, [user, show])
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
     if (password === confirmPassword) {
       if (!userInfo.isAdmin) {
-        console.log('ups tu som')
         dispatch(
           updateUserProfile({
             id: user._id,
@@ -40,7 +42,6 @@ const UserEditModal = ({ show, handleClose, user }) => {
           })
         )
       } else {
-        console.log('user + admin', user, isAdmin)
         dispatch(
           updateUserProfileByAdmin({
             userToEdit: {
@@ -53,6 +54,7 @@ const UserEditModal = ({ show, handleClose, user }) => {
           })
         )
       }
+      handleClose()
     } else {
       setMessage('Passwords do not match')
     }
@@ -84,7 +86,6 @@ const UserEditModal = ({ show, handleClose, user }) => {
             ></Form.Control>
           </Form.Group>
           <Form.Group controlId='isadmin' as={Row}>
-            {/* <Form.Label column sm={1}></Form.Label> */}
             <Col sm={4} style={{ padding: '6px', marginLeft: '10px' }}>
               <Form.Check
                 type='checkbox'
@@ -95,7 +96,7 @@ const UserEditModal = ({ show, handleClose, user }) => {
             </Col>
           </Form.Group>
           <Form.Group controlId='password'>
-            <Form.Label>New Password</Form.Label>
+            <Form.Label>New Password</Form.Label>s
             <Form.Control
               type='password'
               placeholder='enter password'
@@ -125,18 +126,19 @@ const UserEditModal = ({ show, handleClose, user }) => {
           variant='primary'
           onClick={(e) => {
             onSubmitHandler(e)
-            handleClose()
           }}
           disabled={
             user &&
             user.name === name &&
             user.email === email &&
-            user.isAdmin === isAdmin
+            user.isAdmin === isAdmin &&
+            password === ''
           }
         >
           Edit User
         </Button>
       </Modal.Footer>
+      {message && <Message variant='danger'>{message}</Message>}
     </Modal>
   )
 }
