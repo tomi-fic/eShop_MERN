@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import ProductEditModal from '../components/modals/productEditModal'
 import { listProducts } from '../actions/productActions.js'
 import RatingStars from '../components/RatingStars'
+import { deleteProduct } from '../actions/productActions.js'
 import styled from 'styled-components'
 
 const Theme = {
@@ -20,6 +21,7 @@ const ProductListView = ({ history, match }) => {
   const { isPending, error, products } = useSelector(
     (state) => state.productList
   )
+  const { success } = useSelector((state) => state.productDelete)
   const { userInfo } = useSelector((state) => state.userLogin)
 
   const [showEditModal, setShowEditModal] = useState(false)
@@ -37,11 +39,11 @@ const ProductListView = ({ history, match }) => {
     } else {
       dispatch(listProducts())
     }
-  }, [dispatch, userInfo, history])
+  }, [dispatch, userInfo, history, success])
 
   const onDeleteHandler = (product) => {
     if (window.confirm(`Are you sure to delete ${product.name} ?`)) {
-      //  DELETE PRODUCT
+      dispatch(deleteProduct(product._id))
     }
   }
 

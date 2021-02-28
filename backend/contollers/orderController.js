@@ -34,8 +34,6 @@ export const addOrderItems = asyncHandler(async (req, res) => {
     const createdOrder = await order.save()
     res.status(201).json(createdOrder)
   }
-
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    Get order by ID
@@ -53,8 +51,6 @@ export const getOrderById = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('No order found')
   }
-
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    Update order to paid
@@ -78,8 +74,6 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('No order found')
   }
-
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    Get logged in user orders
@@ -88,6 +82,4 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
 export const getUserOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.user._id })
   res.json(orders)
-
-  console.log('Route:', req.originalUrl.green)
 })

@@ -47,7 +47,6 @@ const OrderView = ({ history, match }) => {
   }, [dispatch, order, match, successPay])
 
   const onSuccessPaymentHandler = (payRes) => {
-    console.log('payRes', payRes)
     dispatch(payOrder(order._id, payRes))
   }
 

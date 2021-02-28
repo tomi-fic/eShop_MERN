@@ -33,7 +33,6 @@ export const registerUser = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error('Invalid user data')
   }
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    Auth user & get token
@@ -57,7 +56,6 @@ export const authUser = asyncHandler(async (req, res) => {
     res.status(401)
     throw new Error('Invalid email or password')
   }
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    GET user profile
@@ -77,7 +75,6 @@ export const getUserProfile = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('user not found')
   }
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    GET all users
@@ -86,7 +83,6 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 export const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({}).select('-password')
   res.json(users)
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    UPDATE user profile
@@ -114,7 +110,6 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('user not found')
   }
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    UPDATE user profile by ADMIN
@@ -143,7 +138,6 @@ export const updateUserProfileByAdmin = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('User not found')
   }
-  console.log('Route:', req.originalUrl.green)
 })
 
 // @desc    Delete user
@@ -160,5 +154,4 @@ export const deleteUser = asyncHandler(async (req, res) => {
     throw new Error('User not found')
   }
   res.json(user)
-  console.log('Route:', req.originalUrl.green)
 })

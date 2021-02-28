@@ -5,6 +5,9 @@ import {
   PRODUCT_DETAIL_PENDING,
   PRODUCT_DETAIL_SUCCESS,
   PRODUCT_DETAIL_FAILED,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_FAIL,
 } from '../constants/reducerConstants.js'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -43,6 +46,27 @@ export const productDetailReducer = (
         product: action.payload,
       }
     case PRODUCT_DETAIL_FAILED:
+      return {
+        isPending: false,
+        error: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+export const productDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_DELETE_REQUEST:
+      return {
+        isPending: true,
+      }
+    case PRODUCT_DELETE_SUCCESS:
+      return {
+        isPending: false,
+        success: true,
+      }
+    case PRODUCT_DELETE_FAIL:
       return {
         isPending: false,
         error: action.payload,
