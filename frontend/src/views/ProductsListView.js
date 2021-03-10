@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import ProductEditModal from '../components/modals/productEditModal'
+import ProductCreatetModal from '../components/modals/productCreateModal'
 import { listProducts } from '../actions/productActions.js'
 import RatingStars from '../components/RatingStars'
 import { deleteProduct } from '../actions/productActions.js'
@@ -21,14 +22,16 @@ const ProductListView = ({ history, match }) => {
   const { isPending, error, products } = useSelector(
     (state) => state.productList
   )
-  const { success } = useSelector((state) => state.productDelete)
+  const { success } = useSelector((state) => state.productHandler)
   const { userInfo } = useSelector((state) => state.userLogin)
 
   const [showEditModal, setShowEditModal] = useState(false)
+  const [modalMode, setModalMode] = useState('')
   const [productToEdit, productUserToEdit] = useState({})
 
   const handleClose = () => setShowEditModal(false)
-  const handleShow = (product) => {
+  const handleShow = (product, mode) => {
+    setModalMode(mode)
     setShowEditModal(true)
     productUserToEdit(product)
   }
@@ -47,8 +50,6 @@ const ProductListView = ({ history, match }) => {
     }
   }
 
-  const onCreateProductHandler = () => {}
-
   return (
     <>
       <Row className='aling-items-center'>
@@ -56,7 +57,11 @@ const ProductListView = ({ history, match }) => {
           <h1>Products</h1>
         </Col>
         <Col className='text-right'>
-          <Button className='my-3' onClick={onCreateProductHandler}>
+          <Button
+            className='my-3'
+            onClick={() => handleShow({}, 'create')}
+            active={false}
+          >
             <i className='fas fa-plus'></i> Create Product
           </Button>
         </Col>
@@ -88,7 +93,7 @@ const ProductListView = ({ history, match }) => {
                   <Link to={`/product/${product._id}`}>{product.name}</Link>
                 </td>
                 <td>
-                  {product ? (
+                  {product.isEnabled ? (
                     <i className='fas fa-check' style={{ color: 'green' }}></i>
                   ) : (
                     <i className='fas fa-times' style={{ color: 'red' }}></i>
@@ -107,14 +112,14 @@ const ProductListView = ({ history, match }) => {
                   <RatingStars rating={product.rating} />
                 </td>
                 <td>{product.price}€</td>
-                <td>0%</td>
+                <td>{product.discount}%</td>
                 <td>{product.countInStock}</td>
                 <td>{product.brand}</td>
                 <td>
                   <Button
                     variant='light'
                     className='btn-sm mx-2'
-                    onClick={() => handleShow(product)}
+                    onClick={() => handleShow(product, 'edit')}
                     active={false}
                   >
                     <i className='fas fa-edit'></i>
@@ -132,12 +137,21 @@ const ProductListView = ({ history, match }) => {
           </tbody>
         </Table>
       )}
-      <ProductEditModal
-        show={showEditModal}
-        onHide={handleClose}
-        product={productToEdit}
-        handleClose={handleClose}
-      />
+      {modalMode === 'edit' ? (
+        <ProductEditModal
+          show={showEditModal}
+          onHide={handleClose}
+          product={productToEdit}
+          handleClose={handleClose}
+        />
+      ) : modalMode === 'create' ? (
+        <ProductCreatetModal
+          show={showEditModal}
+          onHide={handleClose}
+          product={{}}
+          handleClose={handleClose}
+        />
+      ) : null}
     </>
   )
 }

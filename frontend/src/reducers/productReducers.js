@@ -8,6 +8,12 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_FAIL,
 } from '../constants/reducerConstants.js'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -55,7 +61,7 @@ export const productDetailReducer = (
   }
 }
 
-export const productDeleteReducer = (state = {}, action) => {
+export const productHandlerReducer = (state = {}, action) => {
   switch (action.type) {
     case PRODUCT_DELETE_REQUEST:
       return {
@@ -67,6 +73,35 @@ export const productDeleteReducer = (state = {}, action) => {
         success: true,
       }
     case PRODUCT_DELETE_FAIL:
+      return {
+        isPending: false,
+        error: action.payload,
+      }
+    case PRODUCT_UPDATE_REQUEST:
+      return {
+        isPending: true,
+      }
+    case PRODUCT_UPDATE_SUCCESS:
+      return {
+        isPending: false,
+        success: true,
+      }
+    case PRODUCT_UPDATE_FAIL:
+      return {
+        isPending: false,
+        error: action.payload,
+      }
+    case PRODUCT_CREATE_REQUEST:
+      return {
+        isPending: true,
+      }
+    case PRODUCT_CREATE_SUCCESS:
+      return {
+        isPending: false,
+        success: true,
+        createSuccess: true,
+      }
+    case PRODUCT_CREATE_FAIL:
       return {
         isPending: false,
         error: action.payload,

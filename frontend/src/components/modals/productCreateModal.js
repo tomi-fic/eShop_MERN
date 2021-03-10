@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Modal, Form, Col, Row } from 'react-bootstrap'
 import Message from '../../components/Message'
-import { updateProduct } from '../../actions/productActions.js'
+import { createProduct } from '../../actions/productActions.js'
 import {
   productCategories,
   productBrands,
 } from '../../constants/productConstants.js'
 
-const ProductEditModal = ({ show, handleClose, product }) => {
+const ProductCreatetModal = ({ show, handleClose, product }) => {
   const dispatch = useDispatch()
-  const { error } = useSelector((state) => state.productHandler)
+  const { createSuccess, error } = useSelector((state) => state.productHandler)
   //
+
   const [name, setName] = useState('')
-  const [category, setCategory] = useState('')
-  const [brand, setBrand] = useState('')
+  const [category, setCategory] = useState('Electronics')
+  const [brand, setBrand] = useState('Apple')
   const [price, setPrice] = useState(0)
   const [discount, setDiscount] = useState(0)
   const [countInStock, setCountInStock] = useState(0)
@@ -22,21 +23,21 @@ const ProductEditModal = ({ show, handleClose, product }) => {
   const [desc, setDesc] = useState('')
 
   useEffect(() => {
-    setName(product.name)
-    setCategory(product.category)
-    setBrand(product.brand)
-    setPrice(product.price)
-    setDiscount(product.discount)
-    setCountInStock(product.countInStock)
-    setIsEnabled(product.isEnabled)
-    setDesc(product.description)
-  }, [product, show])
+    setName('')
+    setCategory('Electronics')
+    setBrand('Apple')
+    setPrice(0)
+    setDiscount(0)
+    setCountInStock(0)
+    setIsEnabled(true)
+    setDesc('')
+    createSuccess && handleClose()
+  }, [createSuccess, show])
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
     dispatch(
-      updateProduct({
-        id: product._id,
+      createProduct({
         name,
         category,
         price,
@@ -47,7 +48,7 @@ const ProductEditModal = ({ show, handleClose, product }) => {
         description: desc,
       })
     )
-    handleClose()
+    // handleClose()
   }
 
   return (
@@ -55,7 +56,7 @@ const ProductEditModal = ({ show, handleClose, product }) => {
       <Modal.Header closeButton>
         <Modal.Title>
           <span style={{ fontSize: '16px' }}>
-            Product ID: <strong>{product._id}</strong>
+            <strong>Create new product</strong>
           </span>
         </Modal.Title>
       </Modal.Header>
@@ -208,22 +209,9 @@ const ProductEditModal = ({ show, handleClose, product }) => {
           onClick={(e) => {
             onSubmitHandler(e)
           }}
-          disabled={
-            (product &&
-              product.name === name &&
-              product.category === category &&
-              product.price === price &&
-              product.brand === brand &&
-              product.discount === discount &&
-              product.isEnabled === isEnabled &&
-              product.countInStock === countInStock &&
-              product.description === desc) ||
-            !price ||
-            !name ||
-            !countInStock
-          }
+          disabled={!price || !name || !countInStock}
         >
-          Edit product
+          Create product
         </Button>
       </Modal.Footer>
       {error && <Message variant='danger'>{error}</Message>}
@@ -231,4 +219,4 @@ const ProductEditModal = ({ show, handleClose, product }) => {
   )
 }
 
-export default ProductEditModal
+export default ProductCreatetModal
