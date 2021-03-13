@@ -13,6 +13,9 @@ node_modules/
 # default data import 
 /backend/data
 
+# uploaded images
+/uploads/img
+
 # misc
 .DS_Store
 .env

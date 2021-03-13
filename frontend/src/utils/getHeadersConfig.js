@@ -14,3 +14,9 @@ export const getHeadersConfig = (token) => {
     }
   }
 }
+
+export const getHeaderFileConfig = () => ({
+  headers: {
+    'Content-Type': 'multipart/from-data',
+  },
+})

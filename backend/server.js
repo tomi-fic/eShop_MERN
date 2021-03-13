@@ -1,4 +1,5 @@
 import express from 'express'
+import path from 'path'
 import dotenv from 'dotenv'
 import colors from 'colors'
 import connectDB from './config/db.js'
@@ -8,6 +9,7 @@ import { logger } from './middleware/loggingMiddleware.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
+import uploadRoutes from './routes/uploadRoutes.js'
 
 dotenv.config()
 connectDB()
@@ -27,6 +29,10 @@ app.use(logger)
 app.use('/products', productRoutes)
 app.use('/users', userRoutes)
 app.use('/orders', orderRoutes)
+app.use('/upload', uploadRoutes)
+
+const __dirname = path.resolve()
+app.use('/uploads/img', express.static(path.join(__dirname, '/uploads/img')))
 
 app.get('/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 

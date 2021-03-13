@@ -15,6 +15,18 @@ const Theme = {
   Image: styled(Image)`
     width: 50px;
   `,
+  Button: styled(Button).attrs((props) => ({
+    variant: props.variant,
+  }))`
+    &.btn-${(props) => props.variant}:focus {
+      background-color: var(--${(props) => props.variant});
+      border-color: var(--${(props) => props.variant});
+      box-shadow: none;
+    }
+  `,
+  i: styled.i`
+    color: #5a5a5a;
+  `,
 }
 
 const ProductListView = ({ history, match }) => {
@@ -57,13 +69,13 @@ const ProductListView = ({ history, match }) => {
           <h1>Products</h1>
         </Col>
         <Col className='text-right'>
-          <Button
+          <Theme.Button
+            variant='primary'
             className='my-3'
             onClick={() => handleShow({}, 'create')}
-            active={false}
           >
             <i className='fas fa-plus'></i> Create Product
-          </Button>
+          </Theme.Button>
         </Col>
       </Row>
       {isPending ? (
@@ -116,21 +128,21 @@ const ProductListView = ({ history, match }) => {
                 <td>{product.countInStock}</td>
                 <td>{product.brand}</td>
                 <td>
-                  <Button
+                  <Theme.Button
                     variant='light'
                     className='btn-sm mx-2'
                     onClick={() => handleShow(product, 'edit')}
                     active={false}
                   >
-                    <i className='fas fa-edit'></i>
-                  </Button>
-                  <Button
+                    <Theme.i className='fas fa-edit'></Theme.i>
+                  </Theme.Button>
+                  <Theme.Button
                     variant='danger'
                     className='btn-sm'
                     onClick={() => onDeleteHandler(product)}
                   >
                     <i className='fas fa-trash'></i>
-                  </Button>
+                  </Theme.Button>
                 </td>
               </tr>
             ))}
@@ -148,7 +160,6 @@ const ProductListView = ({ history, match }) => {
         <ProductCreatetModal
           show={showEditModal}
           onHide={handleClose}
-          product={{}}
           handleClose={handleClose}
         />
       ) : null}

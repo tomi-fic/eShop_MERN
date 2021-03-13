@@ -1,36 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Modal, Form, Col, Row } from 'react-bootstrap'
+import { Button, Modal, Form, Col, Row, Image } from 'react-bootstrap'
 import Message from '../../components/Message'
 import { createProduct } from '../../actions/productActions.js'
 import {
   productCategories,
   productBrands,
 } from '../../constants/productConstants.js'
+import axios from 'axios'
+import Loader from '../Loader'
+import { getHeaderFileConfig } from '../../utils/getHeadersConfig'
 
-const ProductCreatetModal = ({ show, handleClose, product }) => {
+const ProductCreatetModal = ({ show, handleClose }) => {
   const dispatch = useDispatch()
   const { createSuccess, error } = useSelector((state) => state.productHandler)
   //
 
   const [name, setName] = useState('')
-  const [category, setCategory] = useState('Electronics')
-  const [brand, setBrand] = useState('Apple')
+  const [category, setCategory] = useState(productCategories[0])
+  const [brand, setBrand] = useState(productBrands[0])
   const [price, setPrice] = useState(0)
   const [discount, setDiscount] = useState(0)
   const [countInStock, setCountInStock] = useState(0)
   const [isEnabled, setIsEnabled] = useState(true)
   const [desc, setDesc] = useState('')
+  const [isUploading, setIsUploading] = useState(false)
+  const [image, setImage] = useState('')
 
   useEffect(() => {
     setName('')
-    setCategory('Electronics')
-    setBrand('Apple')
+    setCategory(productCategories[0])
+    setBrand(productBrands[0])
     setPrice(0)
     setDiscount(0)
     setCountInStock(0)
     setIsEnabled(true)
     setDesc('')
+    setIsUploading(false)
+    setImage('')
     createSuccess && handleClose()
   }, [createSuccess, show])
 
@@ -45,10 +52,28 @@ const ProductCreatetModal = ({ show, handleClose, product }) => {
         discount,
         isEnabled,
         countInStock,
+        image,
         description: desc,
       })
     )
-    // handleClose()
+  }
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0] //first file
+    const formData = new FormData()
+    formData.append('image', file)
+    setIsUploading(true)
+    try {
+      const { data } = await axios.post(
+        '/upload',
+        formData,
+        getHeaderFileConfig()
+      )
+      setImage(data)
+      setIsUploading(false)
+    } catch {
+      setIsUploading(false)
+    }
   }
 
   return (
@@ -182,6 +207,30 @@ const ProductCreatetModal = ({ show, handleClose, product }) => {
                 onChange={(e) => setIsEnabled(!isEnabled)}
               ></Form.Check>
             </Col>
+          </Form.Group>
+          <Form.Group controlId='image' as={Row}>
+            <Form.Label as={Col} sm='2'>
+              Image
+            </Form.Label>
+            <Col sm={4}>
+              <Form.File
+                id='image-file'
+                label='Upload'
+                data-browse='File'
+                custom
+                onChange={uploadFileHandler}
+              ></Form.File>
+            </Col>
+            <Col sm={6}>
+              <Image
+                src={image}
+                alt={image}
+                fluid
+                rounded
+                style={{ width: '50px' }}
+              />
+            </Col>
+            {isUploading && <Loader />}
           </Form.Group>
           <Form.Group controlId='description' as={Row}>
             <Form.Label as={Col} sm='2'>
