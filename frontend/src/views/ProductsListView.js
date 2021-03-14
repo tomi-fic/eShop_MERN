@@ -9,6 +9,7 @@ import ProductCreatetModal from '../components/modals/productCreateModal'
 import { listProducts } from '../actions/productActions.js'
 import RatingStars from '../components/RatingStars'
 import { deleteProduct } from '../actions/productActions.js'
+import { resetImgHandler } from '../actions/uploadActions.js'
 import styled from 'styled-components'
 
 const Theme = {
@@ -41,7 +42,10 @@ const ProductListView = ({ history, match }) => {
   const [modalMode, setModalMode] = useState('')
   const [productToEdit, productUserToEdit] = useState({})
 
-  const handleClose = () => setShowEditModal(false)
+  const handleClose = () => {
+    setShowEditModal(false)
+    dispatch(resetImgHandler)
+  }
   const handleShow = (product, mode) => {
     setModalMode(mode)
     setShowEditModal(true)

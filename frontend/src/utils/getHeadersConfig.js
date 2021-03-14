@@ -15,8 +15,19 @@ export const getHeadersConfig = (token) => {
   }
 }
 
-export const getHeaderFileConfig = () => ({
-  headers: {
-    'Content-Type': 'multipart/from-data',
-  },
-})
+export const getHeaderFileConfig = (token) => {
+  if (token) {
+    return {
+      headers: {
+        'Content-Type': 'multipart/from-data',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  } else {
+    return {
+      headers: {
+        'Content-Type': 'multipart/from-data',
+      },
+    }
+  }
+}

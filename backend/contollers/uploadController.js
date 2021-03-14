@@ -28,10 +28,10 @@ function checkFileType(file, cb) {
   }
 }
 
-// @desc    Upload product image
+// @desc    Upload one product image
 // @route   POST /uploads
 // @access  Private/Admin
-const upload = multer({
+const uploadSingle = multer({
   storage,
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb)
@@ -39,7 +39,7 @@ const upload = multer({
 }).single('image')
 
 export function uploadFile(req, res, next) {
-  upload(req, res, function (err) {
+  uploadSingle(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       res.status(400)
       next(new Error('Multer error occurred when uploading'))
@@ -48,6 +48,34 @@ export function uploadFile(req, res, next) {
       next(new Error('Not valid image type'))
     } else {
       res.send(`/${req.file.path}`)
+    }
+  })
+}
+
+// @desc    Upload multiple product images
+// @route   POST /uploads
+// @access  Private/Admin
+const uploadMultiple = multer({
+  storage,
+  fileFilter: function (req, file, cb) {
+    checkFileType(file, cb)
+  },
+}).array('images', 5)
+
+export function uploadFiles(req, res, next) {
+  uploadMultiple(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      res.status(400)
+      next(new Error('Multer error occurred when uploading'))
+    } else if (err) {
+      res.status(400)
+      next(new Error('Not valid image type'))
+    } else {
+      const path = []
+      req.files.map((file, key) => {
+        path.push(file.path)
+      })
+      res.send(path)
     }
   })
 }

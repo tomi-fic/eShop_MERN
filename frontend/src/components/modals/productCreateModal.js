@@ -3,17 +3,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Modal, Form, Col, Row, Image } from 'react-bootstrap'
 import Message from '../../components/Message'
 import { createProduct } from '../../actions/productActions.js'
+import { uploadImg, uploadImgs } from '../../actions/uploadActions.js'
 import {
   productCategories,
   productBrands,
 } from '../../constants/productConstants.js'
-import axios from 'axios'
 import Loader from '../Loader'
-import { getHeaderFileConfig } from '../../utils/getHeadersConfig'
 
 const ProductCreatetModal = ({ show, handleClose }) => {
   const dispatch = useDispatch()
   const { createSuccess, error } = useSelector((state) => state.productHandler)
+  const {
+    isPending: isUploadPending,
+    img: uploadImgPath,
+    error: uploadError,
+  } = useSelector((state) => state.uploadHandler)
   //
 
   const [name, setName] = useState('')
@@ -24,8 +28,6 @@ const ProductCreatetModal = ({ show, handleClose }) => {
   const [countInStock, setCountInStock] = useState(0)
   const [isEnabled, setIsEnabled] = useState(true)
   const [desc, setDesc] = useState('')
-  const [isUploading, setIsUploading] = useState(false)
-  const [image, setImage] = useState('')
 
   useEffect(() => {
     setName('')
@@ -36,8 +38,6 @@ const ProductCreatetModal = ({ show, handleClose }) => {
     setCountInStock(0)
     setIsEnabled(true)
     setDesc('')
-    setIsUploading(false)
-    setImage('')
     createSuccess && handleClose()
   }, [createSuccess, show])
 
@@ -52,29 +52,15 @@ const ProductCreatetModal = ({ show, handleClose }) => {
         discount,
         isEnabled,
         countInStock,
-        image,
+        image: uploadImgPath,
         description: desc,
       })
     )
   }
 
   const uploadFileHandler = async (e) => {
-    const file = e.target.files[0] //first file
-    const formData = new FormData()
-    formData.append('image', file)
-    setIsUploading(true)
-    try {
-      const { data } = await axios.post(
-        '/upload',
-        formData,
-        getHeaderFileConfig()
-      )
-      setImage(data)
-      setIsUploading(false)
-    } catch (error) {
-      setIsUploading(false)
-      console.log('productCreateModal: ', error.response.data.message)
-    }
+    // dispatch(uploadImg(e.target.files[0]))
+    dispatch(uploadImgs(e.target.files))
   }
 
   return (
@@ -223,19 +209,24 @@ const ProductCreatetModal = ({ show, handleClose }) => {
                 label='Upload'
                 data-browse='File'
                 custom
+                multiple
                 onChange={uploadFileHandler}
               ></Form.File>
             </Col>
             <Col sm={6}>
-              <Image
-                src={image}
-                alt={image}
-                fluid
-                rounded
-                style={{ width: '50px' }}
-              />
+              {uploadImgPath.map((img, key) => (
+                <Image
+                  src={img}
+                  alt={img}
+                  key={key}
+                  fluid
+                  rounded
+                  style={{ width: '50px' }}
+                />
+              ))}
+              {isUploadPending && <Loader />}
+              {uploadError && <Message variant='danger'>{uploadError}</Message>}
             </Col>
-            {isUploading && <Loader />}
           </Form.Group>
           <Form.Group controlid='description' as={Row}>
             <Form.Label as={Col} sm='2'>

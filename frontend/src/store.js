@@ -20,6 +20,7 @@ import {
   orderPayReducer,
   orderByUserReducer,
 } from './reducers/orderReducers.js'
+import { uploadHandlerReducer } from './reducers/uploadReducer'
 // DEV
 import { composeWithDevTools } from 'redux-devtools-extension'
 
@@ -38,6 +39,7 @@ const rootReducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   orderByUser: orderByUserReducer,
+  uploadHandler: uploadHandlerReducer,
 })
 const initialState = {
   cart: {
