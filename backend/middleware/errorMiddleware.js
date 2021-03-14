@@ -10,6 +10,7 @@ const notFound = (req, res, next) => {
 const errorHandler = (err, req, res, next) => {
   generateLogging(req, 'E')
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode
+  console.log('errorHandler', statusCode)
   res.status(statusCode)
   res.json({
     message: err.message,
