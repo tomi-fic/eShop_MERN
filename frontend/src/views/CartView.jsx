@@ -53,12 +53,14 @@ const CartView = (props) => {
               <ListGroup.Item key={key}>
                 <Row>
                   <Col md={2}>
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fluid
-                      rounded
-                    />
+                    {product.gallery && (
+                      <Image
+                        src={product.gallery[0].image}
+                        alt={product.name}
+                        fluid
+                        rounded
+                      />
+                    )}
                   </Col>
                   <Col md={3}>
                     <Link to={`/product/${product._id}`}>{product.name}</Link>

@@ -11,7 +11,7 @@ export const addToCart = (prod, qty) => (dispatch, getState) => {
     payload: {
       _id: prod._id,
       name: prod.name,
-      image: prod.image,
+      gallery: prod.gallery,
       price: prod.price,
       countInStock: prod.countInStock,
       qty: qty,

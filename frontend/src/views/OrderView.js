@@ -105,14 +105,14 @@ const OrderView = ({ history, match }) => {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={item.gallery[0].image}
                             alt={item.name}
                             fluid
                             rounded
                           />
                         </Col>
                         <Col>
-                          <Link to={`product/${item._id}`}>{item.name}</Link>
+                          <Link to={`/product/${item._id}`}>{item.name}</Link>
                         </Col>
                         <Col md={4}>
                           {item.qty} x {item.price}€ ={' '}

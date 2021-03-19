@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { productDetails } from '../actions/productActions.js'
 import { addToCart } from '../actions/cartActions.js'
 import { Link } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
+import { Row, Col, ListGroup, Card, Button } from 'react-bootstrap'
 import RatingStars from '../components/RatingStars'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import Carousel from '../components/Carousel'
+import ImageGallery from '../components/ImageGallery'
 import QuantityPicker from '../components/QuantityPicker'
 
 const ProductView = (props) => {
@@ -38,8 +38,7 @@ const ProductView = (props) => {
       ) : (
         <Row>
           <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid />
-            {product.gallery && <Carousel gallery={product.gallery} />}
+            {product.gallery && <ImageGallery gallery={product.gallery} />}
           </Col>
           <Col md={3}>
             <ListGroup variant='flush'>

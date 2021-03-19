@@ -117,7 +117,7 @@ const ProductListView = ({ history, match }) => {
                 </td>
                 <td>
                   <Theme.Image
-                    src={product.image}
+                    src={product.gallery[0].image}
                     alt={product.name}
                     fluid
                     rounded

@@ -74,7 +74,7 @@ const PlaceOrderView = ({ history }) => {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={item.gallery[0].image}
                             alt={item.name}
                             fluid
                             rounded

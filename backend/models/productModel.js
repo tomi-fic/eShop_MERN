@@ -27,10 +27,6 @@ const productSchema = mongoose.Schema(
       required: true,
       default: true,
     },
-    image: {
-      type: String,
-      required: true,
-    },
     gallery: [
       {
         image: { type: String, required: true },
