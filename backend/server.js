@@ -32,10 +32,9 @@ app.use('/orders', orderRoutes)
 app.use('/upload', uploadRoutes)
 
 const __dirname = path.resolve()
-app.use(
-  '/admin/uploads/img',
-  express.static(path.join(__dirname, '/uploads/img'))
-)
+app.use('/product/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('/admin/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.get('/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
 

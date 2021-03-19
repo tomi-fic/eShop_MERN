@@ -72,8 +72,8 @@ export function uploadFiles(req, res, next) {
       next(new Error('Not valid image type'))
     } else {
       const path = []
-      req.files.map((file, key) => {
-        path.push(file.path)
+      req.files.forEach((file) => {
+        path.push({ image: file.path })
       })
       res.send(path)
     }

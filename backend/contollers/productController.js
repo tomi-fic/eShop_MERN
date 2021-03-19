@@ -83,6 +83,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     isEnabled,
     countInStock,
     image,
+    gallery,
     description,
   } = req.body
 
@@ -91,7 +92,7 @@ export const createProduct = asyncHandler(async (req, res) => {
     category,
     user: req.user._id,
     image: image || '/images/sample.jpg',
-    gallery: [{ image: '/images/sample.jpg' }],
+    gallery,
     price,
     brand,
     discount,

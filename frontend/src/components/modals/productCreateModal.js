@@ -15,7 +15,7 @@ const ProductCreatetModal = ({ show, handleClose }) => {
   const { createSuccess, error } = useSelector((state) => state.productHandler)
   const {
     isPending: isUploadPending,
-    img: uploadImgPath,
+    img: uploadImgArrayPath,
     error: uploadError,
   } = useSelector((state) => state.uploadHandler)
   //
@@ -52,7 +52,8 @@ const ProductCreatetModal = ({ show, handleClose }) => {
         discount,
         isEnabled,
         countInStock,
-        image: uploadImgPath,
+        image: uploadImgArrayPath[0].image,
+        gallery: uploadImgArrayPath,
         description: desc,
       })
     )
@@ -214,10 +215,10 @@ const ProductCreatetModal = ({ show, handleClose }) => {
               ></Form.File>
             </Col>
             <Col sm={6}>
-              {uploadImgPath.map((img, key) => (
+              {uploadImgArrayPath.map((img, key) => (
                 <Image
-                  src={img}
-                  alt={img}
+                  src={img.image}
+                  alt={img.image}
                   key={key}
                   fluid
                   rounded

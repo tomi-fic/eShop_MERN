@@ -61,7 +61,7 @@ const ProductEditModal = ({ show, handleClose, product }) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group controlId='name' as={Row}>
+          <Form.Group controlid='name' as={Row}>
             <Form.Label as={Col} sm='2'>
               Name
             </Form.Label>
@@ -77,43 +77,47 @@ const ProductEditModal = ({ show, handleClose, product }) => {
               ></Form.Control>
             </Col>
           </Form.Group>
-          <Form.Group controlId='category' as={Row}>
+          <Form.Group controlid='category' as={Row}>
             <Form.Label as={Col} sm='2'>
               Category
             </Form.Label>
             <Col sm='4'>
               <Form.Control
-                controlId='categoryControl'
+                controlid='categoryControl'
                 as='select'
                 size='sm'
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
                 {productCategories.map((cat, key) => (
-                  <option value={cat}>{cat}</option>
+                  <option value={cat} key={key}>
+                    {cat}
+                  </option>
                 ))}
               </Form.Control>
             </Col>
           </Form.Group>
-          <Form.Group controlId='brand' as={Row}>
+          <Form.Group controlid='brand' as={Row}>
             <Form.Label as={Col} sm='2'>
               Brand
             </Form.Label>
             <Col sm='4'>
               <Form.Control
-                controlId='brandControl'
+                controlid='brandControl'
                 as='select'
                 size='sm'
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
               >
                 {productBrands.map((brand, key) => (
-                  <option value={brand}>{brand}</option>
+                  <option value={brand} key={key}>
+                    {brand}
+                  </option>
                 ))}
               </Form.Control>
             </Col>
           </Form.Group>
-          <Form.Group controlId='price' as={Row}>
+          <Form.Group controlid='price' as={Row}>
             <Form.Label as={Col} sm='2'>
               Price
             </Form.Label>
@@ -133,7 +137,7 @@ const ProductEditModal = ({ show, handleClose, product }) => {
               €
             </Col>
           </Form.Group>
-          <Form.Group controlId='discount' as={Row}>
+          <Form.Group controlid='discount' as={Row}>
             <Form.Label as={Col} sm='2'>
               Discount
             </Form.Label>
@@ -152,7 +156,7 @@ const ProductEditModal = ({ show, handleClose, product }) => {
               %
             </Col>
           </Form.Group>
-          <Form.Group controlId='pieces' as={Row}>
+          <Form.Group controlid='pieces' as={Row}>
             <Form.Label as={Col} sm='2'>
               Pieces
             </Form.Label>
@@ -169,7 +173,7 @@ const ProductEditModal = ({ show, handleClose, product }) => {
               ></Form.Control>
             </Col>
           </Form.Group>
-          <Form.Group controlId='isenabled' as={Row}>
+          <Form.Group controlid='isenabled' as={Row}>
             <Form.Label as={Col} sm='2'>
               Enabled
             </Form.Label>
@@ -182,7 +186,7 @@ const ProductEditModal = ({ show, handleClose, product }) => {
               ></Form.Check>
             </Col>
           </Form.Group>
-          <Form.Group controlId='description' as={Row}>
+          <Form.Group controlid='description' as={Row}>
             <Form.Label as={Col} sm='2'>
               Desc
             </Form.Label>

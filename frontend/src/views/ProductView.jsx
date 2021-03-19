@@ -7,6 +7,7 @@ import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import RatingStars from '../components/RatingStars'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Carousel from '../components/Carousel'
 import QuantityPicker from '../components/QuantityPicker'
 
 const ProductView = (props) => {
@@ -38,6 +39,7 @@ const ProductView = (props) => {
         <Row>
           <Col md={6}>
             <Image src={product.image} alt={product.name} fluid />
+            {product.gallery && <Carousel gallery={product.gallery} />}
           </Col>
           <Col md={3}>
             <ListGroup variant='flush'>
