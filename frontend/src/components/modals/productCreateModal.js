@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Modal, Form, Col, Row, Image } from 'react-bootstrap'
 import Message from '../../components/Message'
+import ImagePicker from '../../components/ImagePicker'
+import FileUploader from '../../components/FileUploader'
 import { createProduct } from '../../actions/productActions.js'
 import { uploadImg, uploadImgs } from '../../actions/uploadActions.js'
 import {
   productCategories,
   productBrands,
 } from '../../constants/productConstants.js'
-import Loader from '../Loader'
 
 const ProductCreatetModal = ({ show, handleClose }) => {
   const dispatch = useDispatch()
@@ -28,6 +29,8 @@ const ProductCreatetModal = ({ show, handleClose }) => {
   const [countInStock, setCountInStock] = useState(0)
   const [isEnabled, setIsEnabled] = useState(true)
   const [desc, setDesc] = useState('')
+  const [gallery, setGallery] = useState([])
+  const inputFile = useRef(null)
 
   useEffect(() => {
     setName('')
@@ -38,8 +41,13 @@ const ProductCreatetModal = ({ show, handleClose }) => {
     setCountInStock(0)
     setIsEnabled(true)
     setDesc('')
+    setGallery([])
     createSuccess && handleClose()
   }, [createSuccess, show])
+
+  useEffect(() => {
+    setGallery(gallery.concat(uploadImgArrayPath))
+  }, [uploadImgArrayPath])
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
@@ -52,16 +60,19 @@ const ProductCreatetModal = ({ show, handleClose }) => {
         discount,
         isEnabled,
         countInStock,
-        image: uploadImgArrayPath[0].image,
-        gallery: uploadImgArrayPath,
+        gallery,
         description: desc,
       })
     )
   }
 
   const uploadFileHandler = async (e) => {
-    // dispatch(uploadImg(e.target.files[0]))
     dispatch(uploadImgs(e.target.files))
+  }
+
+  const onRemoveImg = (imageToRemove) => {
+    const newImgArray = gallery.filter((item) => item.image !== imageToRemove)
+    setGallery(newImgArray)
   }
 
   return (
@@ -204,29 +215,19 @@ const ProductCreatetModal = ({ show, handleClose }) => {
             <Form.Label as={Col} sm='2'>
               Image
             </Form.Label>
-            <Col sm={4}>
-              <Form.File
-                id='image-file'
-                label='Upload'
-                data-browse='File'
-                custom
-                multiple
-                onChange={uploadFileHandler}
-              ></Form.File>
+            <Col sm={2}>
+              <FileUploader
+                inputFile={inputFile}
+                uploadFileHandler={uploadFileHandler}
+              />
             </Col>
-            <Col sm={6}>
-              {uploadImgArrayPath.map((img, key) => (
-                <Image
-                  src={img.image}
-                  alt={img.image}
-                  key={key}
-                  fluid
-                  rounded
-                  style={{ width: '50px' }}
-                />
-              ))}
-              {isUploadPending && <Loader />}
-              {uploadError && <Message variant='danger'>{uploadError}</Message>}
+            <Col sm={8}>
+              <ImagePicker
+                gallery={gallery}
+                onRemoveImg={onRemoveImg}
+                uploadError={uploadError}
+                isUploadPending={isUploadPending}
+              />
             </Col>
           </Form.Group>
           <Form.Group controlid='description' as={Row}>

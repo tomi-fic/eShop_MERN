@@ -5,7 +5,10 @@ import {
   UPLOAD_IMG_RESET,
 } from '../constants/reducerConstants.js'
 
-export const uploadHandlerReducer = (state = { img: [] }, action) => {
+export const uploadHandlerReducer = (
+  state = { isPending: false, img: [], error: null },
+  action
+) => {
   switch (action.type) {
     case UPLOAD_IMG_REQUEST:
       return {

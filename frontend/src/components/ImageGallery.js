@@ -25,7 +25,16 @@ const GalleryComp = ({ gallery }) => {
       thumbnail: file.image,
     })
   })
-  return <ImageGallery items={images} showPlayButton={false} />
+  return (
+    <ImageGallery
+      items={images}
+      showPlayButton={false}
+      // showBullets={true}
+      showIndex={true}
+      originalAlt={images.original}
+      thumbnailPosition={'left'}
+    />
+  )
 }
 
 export default GalleryComp

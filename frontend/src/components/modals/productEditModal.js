@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Modal, Form, Col, Row } from 'react-bootstrap'
 import Message from '../../components/Message'
+import ImagePicker from '../../components/ImagePicker'
+import FileUploader from '../../components/FileUploader'
 import { updateProduct } from '../../actions/productActions.js'
 import {
   productCategories,
   productBrands,
 } from '../../constants/productConstants.js'
+import { uploadImg, uploadImgs } from '../../actions/uploadActions.js'
 
 const ProductEditModal = ({ show, handleClose, product }) => {
   const dispatch = useDispatch()
   const { error } = useSelector((state) => state.productHandler)
+  const {
+    isPending: isUploadPending,
+    img: uploadImgArrayPath,
+    error: uploadError,
+  } = useSelector((state) => state.uploadHandler)
   //
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
@@ -20,8 +28,11 @@ const ProductEditModal = ({ show, handleClose, product }) => {
   const [countInStock, setCountInStock] = useState(0)
   const [isEnabled, setIsEnabled] = useState(true)
   const [desc, setDesc] = useState('')
+  const [gallery, setGallery] = useState(product.gallery)
+  const inputFile = useRef(null)
 
   useEffect(() => {
+    setGallery(product.gallery)
     setName(product.name)
     setCategory(product.category)
     setBrand(product.brand)
@@ -31,6 +42,10 @@ const ProductEditModal = ({ show, handleClose, product }) => {
     setIsEnabled(product.isEnabled)
     setDesc(product.description)
   }, [product, show])
+
+  useEffect(() => {
+    setGallery(gallery.concat(uploadImgArrayPath))
+  }, [uploadImgArrayPath])
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
@@ -44,10 +59,20 @@ const ProductEditModal = ({ show, handleClose, product }) => {
         discount,
         isEnabled,
         countInStock,
+        gallery,
         description: desc,
       })
     )
     handleClose()
+  }
+
+  const uploadFileHandler = async (e) => {
+    dispatch(uploadImgs(e.target.files))
+  }
+
+  const onRemoveImg = (imageToRemove) => {
+    const newImgArray = gallery.filter((item) => item.image !== imageToRemove)
+    setGallery(newImgArray)
   }
 
   return (
@@ -186,6 +211,25 @@ const ProductEditModal = ({ show, handleClose, product }) => {
               ></Form.Check>
             </Col>
           </Form.Group>
+          <Form.Group controlid='image' as={Row}>
+            <Form.Label as={Col} sm='2'>
+              Image
+            </Form.Label>
+            <Col sm={2}>
+              <FileUploader
+                inputFile={inputFile}
+                uploadFileHandler={uploadFileHandler}
+              />
+            </Col>
+            <Col sm={8}>
+              <ImagePicker
+                gallery={gallery}
+                onRemoveImg={onRemoveImg}
+                uploadError={uploadError}
+                isUploadPending={isUploadPending}
+              />
+            </Col>
+          </Form.Group>
           <Form.Group controlid='description' as={Row}>
             <Form.Label as={Col} sm='2'>
               Desc
@@ -221,7 +265,8 @@ const ProductEditModal = ({ show, handleClose, product }) => {
               product.discount === discount &&
               product.isEnabled === isEnabled &&
               product.countInStock === countInStock &&
-              product.description === desc) ||
+              product.description === desc &&
+              product.gallery === gallery) ||
             !price ||
             !name ||
             !countInStock
