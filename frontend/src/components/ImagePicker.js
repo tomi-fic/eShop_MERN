@@ -9,13 +9,6 @@ const ImagePicker = ({
   isUploadPending,
   uploadError,
 }) => {
-  console.log(
-    'Image pricker props: ',
-    gallery,
-    onRemoveImg,
-    isUploadPending,
-    uploadError
-  )
   return (
     <div
       style={{

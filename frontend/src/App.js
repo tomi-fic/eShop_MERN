@@ -13,6 +13,7 @@ import PaymentView from './views/PaymentView'
 import PlaceOrderView from './views/PlaceOrderView'
 import OrderView from './views/OrderView'
 import UserListView from './views/UserListView'
+import OrderListView from './views/OrderListView'
 import ProductsListView from './views/ProductsListView'
 import { Container } from 'react-bootstrap'
 import styled from 'styled-components'
@@ -40,6 +41,7 @@ const App = () => {
           <Route path='/orders/:id' component={OrderView} />
           <Route path='/admin/users' component={UserListView} />
           <Route path='/admin/products' component={ProductsListView} />
+          <Route path='/admin/orders' component={OrderListView} />
         </Container>
       </MainWrapper>
       <Footer />

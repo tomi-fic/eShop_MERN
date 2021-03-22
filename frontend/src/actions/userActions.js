@@ -21,6 +21,7 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  ORDER_LIST_RESET,
 } from '../constants/reducerConstants.js'
 import axios from 'axios'
 
@@ -74,6 +75,7 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: ORDER_BY_USER_RESET })
   dispatch({ type: USER_LIST_RESET })
   dispatch({ type: USER_UPDATE_PROFILE_RESET })
+  dispatch({ type: ORDER_LIST_RESET })
 }
 //
 //
