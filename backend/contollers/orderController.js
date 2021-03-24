@@ -38,7 +38,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
 
 // @desc    Get order by ID
 // @route   GET /orders/:id
-// @access  Private
+// @access  Private (only for ordering user or admin)
 export const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
     'user',
@@ -46,7 +46,15 @@ export const getOrderById = asyncHandler(async (req, res) => {
   )
 
   if (order) {
-    res.json(order)
+    if (
+      !req.user.isAdmin &&
+      req.user._id.toString().localeCompare(order.user._id) != 0
+    ) {
+      res.status(400)
+      throw new Error('No authorized for this order details')
+    } else {
+      res.json(order)
+    }
   } else {
     res.status(404)
     throw new Error('No order found')

@@ -131,6 +131,7 @@ export const ordersListReducer = (
       return {
         isPending: false,
         orders: action.payload,
+        success: true,
       }
     case ORDER_LIST_FAIL:
       return {
