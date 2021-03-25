@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import FormContainer from '../components/FormContainer'
+import FormContainer from '../components/containers/FormContainer'
 import { login } from '../actions/userActions.js'
 
 const LoginView = ({ location, history }) => {

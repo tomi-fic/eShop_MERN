@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import Toggler from '../components/Toggler'
 import Theme from '../utils/styledTheme'
 import { getAllOrders } from '../actions/orderActions.js'
+import TogglerContainer from '../components/containers/TogglerContainer'
 
 const OrderListView = ({ history }) => {
   const dispatch = useDispatch()
@@ -17,7 +18,7 @@ const OrderListView = ({ history }) => {
 
   const [isToggled, setIsToggled] = useState(false)
   const [ordersToEdit, setOrdersToEdit] = useState([])
-  const updatedOrders = []
+  const [updatedOrders, setUpdatedOrders] = useState([])
 
   useEffect(() => {
     if (!userInfo || !userInfo.isAdmin) {
@@ -35,9 +36,9 @@ const OrderListView = ({ history }) => {
     if (ordersToEdit !== []) {
       for (var i = 0; i < ordersToEdit.length; i++) {
         if (
-          ordersToEdit[i].changedIsDelivered ||
-          ordersToEdit[i].changedIsPaid ||
-          ordersToEdit[i].changedIsCancelled
+          ordersToEdit[i].DeliveredChanged ||
+          ordersToEdit[i].PaidChanged ||
+          ordersToEdit[i].CancelledChanged
         ) {
           return false
         }
@@ -51,8 +52,8 @@ const OrderListView = ({ history }) => {
     let newArray = ordersToEdit
     newArray[index] = {
       ...ordersToEdit[index],
-      isDelivered: !ordersToEdit[index].isDelivered,
-      [action]:
+      [action]: !ordersToEdit[index][action],
+      [action + 'Changed']:
         typeof ordersToEdit[index][action] !== 'undefined'
           ? !ordersToEdit[index][action]
           : true,
@@ -95,7 +96,12 @@ const OrderListView = ({ history }) => {
             </tr>
           </thead>
           <tbody>
-            {console.log('RENDER ordersToEdit: ', ordersToEdit)}
+            {console.log(
+              'RENDER ordersToEdit: ',
+              ordersToEdit.filter(
+                (x) => x.DeliveredChanged || x.PaidChanged || x.CancelledChanged
+              )
+            )}
             {ordersToEdit &&
               ordersToEdit.map((order, key) => (
                 <tr key={key}>
@@ -108,78 +114,33 @@ const OrderListView = ({ history }) => {
                   </td>
                   <td>{order.user && order.user.name}</td>
                   <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>
-                    {order.totalPrice}€ {typeof order.changedIsDelivered}
-                  </td>
-                  <td
-                    style={
-                      order.changedIsPaid === true
-                        ? { border: '2px solid blue' }
-                        : {}
-                    }
-                  >
-                    {order.isPaid ? (
-                      <Theme.DivCenter>
-                        <span style={{ marginRight: '.7rem' }}>
-                          {order.paidAt.substring(0, 10)}
-                        </span>
-                        <Toggler checked={order.isPaid} disabled={true} />
-                      </Theme.DivCenter>
-                    ) : (
-                      <Theme.DivCenter>
-                        <Toggler
-                          checked={order.isPaid}
-                          onToggle={() => setToggleAction('changedIsPaid', key)}
-                        />
-                      </Theme.DivCenter>
-                    )}
-                  </td>
-                  <td
-                    style={
-                      order.changedIsDelivered === true
-                        ? { border: '2px solid blue' }
-                        : {}
-                    }
-                  >
-                    {order.delivered ? (
-                      <Theme.DivCenter>
-                        <span style={{ marginRight: '.7rem' }}>
-                          {order.deliveredAt.substring(0, 10)}
-                        </span>
-                        <Toggler checked={order.delivered} disabled={true} />
-                      </Theme.DivCenter>
-                    ) : (
-                      <Theme.DivCenter>
-                        <Toggler
-                          checked={order.delivered}
-                          onToggle={() =>
-                            setToggleAction('changedIsDelivered', key)
-                          }
-                        />
-                      </Theme.DivCenter>
-                    )}
-                  </td>
-                  <td
-                    style={
-                      order.changedIsCancelled === true
-                        ? { border: '2px solid blue' }
-                        : {}
-                    }
-                  >
-                    <Theme.DivCenter>
-                      <Toggler
-                        checked={false}
-                        onToggle={() =>
-                          setToggleAction('changedIsCancelled', key)
-                        }
-                      />
-                    </Theme.DivCenter>
-                  </td>
+                  <td>{order.totalPrice}€</td>
+                  <TogglerContainer
+                    order={order}
+                    index={key}
+                    setToggleAction={setToggleAction}
+                    action={'Paid'}
+                  />
+                  <TogglerContainer
+                    order={order}
+                    index={key}
+                    setToggleAction={setToggleAction}
+                    action={'Delivered'}
+                  />
+                  <TogglerContainer
+                    order={order}
+                    index={key}
+                    setToggleAction={setToggleAction}
+                    action={'Cancelled'}
+                  />
                 </tr>
               ))}
           </tbody>
         </Theme.Table>
       )}
+      {updatedOrders.map((order, key) => (
+        <div key={key}>{order._id}</div>
+      ))}
     </>
   )
 }
