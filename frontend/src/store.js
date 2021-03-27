@@ -20,6 +20,7 @@ import {
   orderPayReducer,
   orderByUserReducer,
   ordersListReducer,
+  ordersUpdateReducer,
 } from './reducers/orderReducers.js'
 import { uploadHandlerReducer } from './reducers/uploadReducer'
 // DEV
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   orderPay: orderPayReducer,
   orderByUser: orderByUserReducer,
   ordersList: ordersListReducer,
+  ordersUpdater: ordersUpdateReducer,
   uploadHandler: uploadHandlerReducer,
 })
 const initialState = {

@@ -4,9 +4,8 @@ import { Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import Toggler from '../components/Toggler'
 import Theme from '../utils/styledTheme'
-import { getAllOrders } from '../actions/orderActions.js'
+import { getAllOrders, updateOrders } from '../actions/orderActions.js'
 import TogglerContainer from '../components/containers/TogglerContainer'
 
 const OrderListView = ({ history }) => {
@@ -14,11 +13,11 @@ const OrderListView = ({ history }) => {
   const { isPending, error, success, orders } = useSelector(
     (state) => state.ordersList
   )
+  const { success: updateSuccess } = useSelector((state) => state.ordersUpdater)
   const { userInfo } = useSelector((state) => state.userLogin)
 
   const [isToggled, setIsToggled] = useState(false)
   const [ordersToEdit, setOrdersToEdit] = useState([])
-  const [updatedOrders, setUpdatedOrders] = useState([])
 
   useEffect(() => {
     if (!userInfo || !userInfo.isAdmin) {
@@ -32,13 +31,18 @@ const OrderListView = ({ history }) => {
     }
   }, [dispatch, userInfo, history, success])
 
+  useEffect(() => {
+    dispatch(getAllOrders())
+  }, [dispatch, updateSuccess])
+
   const checkUpdatedOrders = () => {
     if (ordersToEdit !== []) {
       for (var i = 0; i < ordersToEdit.length; i++) {
         if (
           ordersToEdit[i].DeliveredChanged ||
           ordersToEdit[i].PaidChanged ||
-          ordersToEdit[i].CancelledChanged
+          ordersToEdit[i].CancelledChanged ||
+          ordersToEdit[i].ShippedChanged
         ) {
           return false
         }
@@ -48,17 +52,33 @@ const OrderListView = ({ history }) => {
   }
 
   const setToggleAction = (action, index) => {
+    const isKeyword = 'is' + action
+    const changedKeyword = action + 'Changed'
     setIsToggled(!isToggled)
     let newArray = ordersToEdit
     newArray[index] = {
       ...ordersToEdit[index],
-      [action]: !ordersToEdit[index][action],
-      [action + 'Changed']:
-        typeof ordersToEdit[index][action] !== 'undefined'
-          ? !ordersToEdit[index][action]
+      [isKeyword]: !ordersToEdit[index][isKeyword],
+      [changedKeyword]:
+        typeof ordersToEdit[index][changedKeyword] !== 'undefined'
+          ? !ordersToEdit[index][changedKeyword]
           : true,
     }
     setOrdersToEdit(newArray)
+  }
+
+  const onSaveButton = () => {
+    dispatch(
+      updateOrders(
+        ordersToEdit.filter(
+          (x) =>
+            x.DeliveredChanged ||
+            x.PaidChanged ||
+            x.CancelledChanged ||
+            x.ShippedChanged
+        )
+      )
+    )
   }
 
   return (
@@ -71,7 +91,7 @@ const OrderListView = ({ history }) => {
           <Button
             variant='primary'
             className='my-3'
-            onClick={() => console.log('clicked to SAVE')}
+            onClick={() => onSaveButton()}
             disabled={checkUpdatedOrders()}
           >
             <i className='fas fa-save'></i> SAVE
@@ -91,6 +111,7 @@ const OrderListView = ({ history }) => {
               <th>DATE</th>
               <th>TOTAL</th>
               <th>PAID</th>
+              <th>SHIPPED</th>
               <th>DELIVERED</th>
               <th>CANCEL</th>
             </tr>
@@ -99,7 +120,11 @@ const OrderListView = ({ history }) => {
             {console.log(
               'RENDER ordersToEdit: ',
               ordersToEdit.filter(
-                (x) => x.DeliveredChanged || x.PaidChanged || x.CancelledChanged
+                (x) =>
+                  x.DeliveredChanged ||
+                  x.PaidChanged ||
+                  x.CancelledChanged ||
+                  x.ShippedChanged
               )
             )}
             {ordersToEdit &&
@@ -125,6 +150,12 @@ const OrderListView = ({ history }) => {
                     order={order}
                     index={key}
                     setToggleAction={setToggleAction}
+                    action={'Shipped'}
+                  />
+                  <TogglerContainer
+                    order={order}
+                    index={key}
+                    setToggleAction={setToggleAction}
                     action={'Delivered'}
                   />
                   <TogglerContainer
@@ -138,9 +169,6 @@ const OrderListView = ({ history }) => {
           </tbody>
         </Theme.Table>
       )}
-      {updatedOrders.map((order, key) => (
-        <div key={key}>{order._id}</div>
-      ))}
     </>
   )
 }

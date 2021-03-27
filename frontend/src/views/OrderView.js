@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder } from '../actions/orderActions.js'
-import { ORDER_PAY_RESET } from '../constants/reducerConstants.js'
+import { ORDER_PAY_RESET, CART_RESET } from '../constants/reducerConstants.js'
 
 const OrderView = ({ history, match }) => {
   const dispatch = useDispatch()
@@ -160,7 +160,7 @@ const OrderView = ({ history, match }) => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-              {!order.isPaid && (
+              {!order.isPaid && userInfo && !userInfo.isAdmin && (
                 <ListGroup.Item>
                   {isPendingPay && <Loader />}
                   {!isSdkReady ? (

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Table } from 'react-bootstrap'
+import { Table, Image, Button } from 'react-bootstrap'
 
 const Theme = {
   Table: styled(Table)`
@@ -26,6 +26,21 @@ const Theme = {
     display: flex;
     justify-content: center;
     align-items: center;
+  `,
+  Image: styled(Image)`
+    width: 50px;
+  `,
+  Button: styled(Button).attrs((props) => ({
+    variant: props.variant,
+  }))`
+    &.btn-${(props) => props.variant}:focus {
+      background-color: var(--${(props) => props.variant});
+      border-color: var(--${(props) => props.variant});
+      box-shadow: none;
+    }
+  `,
+  i: styled.i`
+    color: #5a5a5a;
   `,
 }
 

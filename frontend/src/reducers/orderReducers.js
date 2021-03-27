@@ -6,6 +6,7 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_CREATE_RESET,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -13,6 +14,9 @@ import {
   ORDER_LIST_REQUEST,
   ORDER_LIST_RESET,
   ORDER_LIST_SUCCESS,
+  ORDER_LIST_UPDATE_FAIL,
+  ORDER_LIST_UPDATE_REQUEST,
+  ORDER_LIST_UPDATE_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_RESET,
@@ -35,6 +39,10 @@ export const orderCreateReducer = (state = {}, action) => {
       return {
         isPending: true,
         error: action.payload,
+      }
+    case ORDER_CREATE_RESET:
+      return {
+        state: {},
       }
     default:
       return state
@@ -142,6 +150,31 @@ export const ordersListReducer = (
       return {
         isPending: false,
         orders: [],
+      }
+    default:
+      return state
+  }
+}
+
+export const ordersUpdateReducer = (
+  state = { isPending: false, orders: [] },
+  action
+) => {
+  switch (action.type) {
+    case ORDER_LIST_UPDATE_REQUEST:
+      return {
+        isPending: true,
+      }
+    case ORDER_LIST_UPDATE_SUCCESS:
+      return {
+        isPending: false,
+        orders: action.payload,
+        success: true,
+      }
+    case ORDER_LIST_UPDATE_FAIL:
+      return {
+        isPending: false,
+        error: action.payload,
       }
     default:
       return state

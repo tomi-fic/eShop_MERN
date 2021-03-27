@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import QuantityPicker from '../components/QuantityPicker'
 import { removeFromCart, addToCart } from '../actions/cartActions.js'
 import styled from 'styled-components'
+import { ORDER_CREATE_RESET } from '../constants/reducerConstants'
 
 const Theme = {
   StyledButton: styled(Button)`
@@ -36,6 +37,7 @@ const CartView = (props) => {
   }
 
   const checkoutHandler = () => {
+    dispatch({ type: ORDER_CREATE_RESET })
     props.history.push('/login?redirect=shipping')
   }
 

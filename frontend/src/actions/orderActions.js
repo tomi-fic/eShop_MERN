@@ -1,4 +1,5 @@
 import {
+  CART_RESET,
   ORDER_BY_USER_FAIL,
   ORDER_BY_USER_REQUEST,
   ORDER_BY_USER_SUCCESS,
@@ -11,6 +12,9 @@ import {
   ORDER_LIST_FAIL,
   ORDER_LIST_REQUEST,
   ORDER_LIST_SUCCESS,
+  ORDER_LIST_UPDATE_FAIL,
+  ORDER_LIST_UPDATE_REQUEST,
+  ORDER_LIST_UPDATE_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
@@ -96,6 +100,8 @@ export const payOrder = (orderId, payRes) => async (dispatch, getState) => {
       type: ORDER_PAY_SUCCESS,
       payload: data,
     })
+    dispatch({ type: CART_RESET })
+    localStorage.removeItem('cartItems')
   } catch (error) {
     dispatch({
       type: ORDER_PAY_FAIL,
@@ -145,6 +151,33 @@ export const getAllOrders = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const updateOrders = (ordersList) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ORDER_LIST_UPDATE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const { data } = await axios.put(
+      `/orders`,
+      ordersList,
+      config(userInfo.token)
+    )
+    dispatch({
+      type: ORDER_LIST_UPDATE_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

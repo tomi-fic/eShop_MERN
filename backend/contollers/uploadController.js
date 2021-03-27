@@ -44,7 +44,7 @@ export function uploadFile(req, res, next) {
       res.status(400)
       next(new Error('Multer error occurred when uploading'))
     } else if (err) {
-      res.status(400)
+      res.status(415)
       next(new Error('Not valid image type'))
     } else {
       res.send(`/${req.file.path}`)
@@ -67,7 +67,7 @@ export function uploadFiles(req, res, next) {
   uploadMultiple(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-        res.status(400)
+        res.status(413)
         next(
           new Error('Selection of maximum ' + imgLimit + ' images is allowed')
         )
@@ -76,7 +76,7 @@ export function uploadFiles(req, res, next) {
         next(new Error('Multer error occurred when uploading'))
       }
     } else if (err) {
-      res.status(400)
+      res.status(415)
       next(new Error('Not valid image type'))
     } else {
       const path = []

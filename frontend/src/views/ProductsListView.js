@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Table, Button, Row, Col, Image } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -10,25 +10,7 @@ import { listProducts } from '../actions/productActions.js'
 import RatingStars from '../components/RatingStars'
 import { deleteProduct } from '../actions/productActions.js'
 import { resetImgHandler } from '../actions/uploadActions.js'
-import styled from 'styled-components'
-
-const Theme = {
-  Image: styled(Image)`
-    width: 50px;
-  `,
-  Button: styled(Button).attrs((props) => ({
-    variant: props.variant,
-  }))`
-    &.btn-${(props) => props.variant}:focus {
-      background-color: var(--${(props) => props.variant});
-      border-color: var(--${(props) => props.variant});
-      box-shadow: none;
-    }
-  `,
-  i: styled.i`
-    color: #5a5a5a;
-  `,
-}
+import Theme from '../utils/styledTheme'
 
 const ProductListView = ({ history, match }) => {
   const dispatch = useDispatch()
@@ -87,7 +69,7 @@ const ProductListView = ({ history, match }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className='tale-sm'>
+        <Theme.Table striped bordered hover responsive className='tale-sm'>
           <thead>
             <tr>
               <th>NAME</th>
@@ -151,7 +133,7 @@ const ProductListView = ({ history, match }) => {
               </tr>
             ))}
           </tbody>
-        </Table>
+        </Theme.Table>
       )}
       {modalMode === 'edit' ? (
         <ProductEditModal

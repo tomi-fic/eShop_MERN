@@ -6,6 +6,7 @@ const TogglerContainer = ({ order, index, setToggleAction, action }) => {
   const isPaid = `is${action}`
   const isPaidChanged = `${action}Changed`
   const paidAt = `${action.toLowerCase()}At`
+
   return (
     <td
       style={order[isPaidChanged] === true ? { border: '2px solid blue' } : {}}
@@ -18,6 +19,7 @@ const TogglerContainer = ({ order, index, setToggleAction, action }) => {
           <Toggler
             checked={order[isPaid]}
             disabled={!order[isPaidChanged] && true}
+            onToggle={() => setToggleAction(action, index)}
           />
         </Theme.DivCenter>
       ) : (
