@@ -5,6 +5,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import UserEditModal from '../components/modals/userEditModal'
 import { listUsers, deleteUser } from '../actions/userActions.js'
+import Theme from '../utils/styledTheme'
 
 const UserListView = ({ history }) => {
   const dispatch = useDispatch()
@@ -46,7 +47,7 @@ const UserListView = ({ history }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className='tale-sm'>
+        <Theme.Table striped bordered hover responsive className='tale-sm'>
           <thead>
             <tr>
               <th>ID</th>
@@ -94,7 +95,7 @@ const UserListView = ({ history }) => {
               </tr>
             ))}
           </tbody>
-        </Table>
+        </Theme.Table>
       )}
       <UserEditModal
         show={showModal}

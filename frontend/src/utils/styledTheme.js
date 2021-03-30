@@ -27,6 +27,16 @@ const Theme = {
     justify-content: center;
     align-items: center;
   `,
+  DivSpaceAroud: styled.div`
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  `,
+  DivLeft: styled.div`
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  `,
   Image: styled(Image)`
     width: 50px;
   `,

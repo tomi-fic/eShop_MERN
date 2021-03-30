@@ -6,18 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { updateUserProfile } from '../actions/userActions.js'
 import { getUserOrders } from '../actions/orderActions.js'
-import styled from 'styled-components'
-
-const Theme = {
-  TD: styled.td`
-    text-align: center;
-    vertical-align: middle;
-  `,
-  TH: styled.th`
-    text-align: center;
-    vertical-align: middle;
-  `,
-}
+import Theme from '../utils/styledTheme'
 
 const ProfileView = ({ location, history }) => {
   const [email, setEmail] = useState('')
@@ -141,24 +130,35 @@ const ProfileView = ({ location, history }) => {
         ) : orderList.length === 0 ? (
           <Message>You have no orders</Message>
         ) : (
-          <Table striped bordered hover responsive className='table-sm'>
+          <Theme.Table bordered hover responsive className='table-sm'>
             <thead>
               <tr>
-                <Theme.TH>ID</Theme.TH>
-                <Theme.TH>DATE</Theme.TH>
-                <Theme.TH>TOTAL</Theme.TH>
-                <Theme.TH>PAID</Theme.TH>
-                <Theme.TH>DELIVERED</Theme.TH>
-                <Theme.TH></Theme.TH>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>SHIPPED</th>
+                <th>DELIVERED</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {orderList.map((order, key) => (
-                <tr key={key}>
-                  <Theme.TD>{order._id}</Theme.TD>
-                  <Theme.TD>{order.createdAt.substring(0, 10)}</Theme.TD>
-                  <Theme.TD>{order.totalPrice.toFixed(2)}€</Theme.TD>
-                  <Theme.TD>
+                <tr
+                  key={key}
+                  style={
+                    order.cancelledAt
+                      ? {
+                          backgroundColor: 'rgba(136,136,136, 0.2)',
+                          color: 'var(--gray-dark)',
+                        }
+                      : {}
+                  }
+                >
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice.toFixed(2)}€</td>
+                  <td>
                     {order.isPaid ? (
                       <Button variant='success' className='btn-sm' disabled>
                         {order.paidAt.substring(0, 10)}
@@ -166,8 +166,17 @@ const ProfileView = ({ location, history }) => {
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
                     )}
-                  </Theme.TD>
-                  <Theme.TD>
+                  </td>
+                  <td>
+                    {order.isShipped ? (
+                      <Button variant='success' className='btn-sm' disabled>
+                        {order.shippedAt.substring(0, 10)}
+                      </Button>
+                    ) : (
+                      <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
                     {order.isDelivered ? (
                       <Button variant='success' className='btn-sm' disabled>
                         {order.deliveredAt.substring(0, 10)}
@@ -175,18 +184,18 @@ const ProfileView = ({ location, history }) => {
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
                     )}
-                  </Theme.TD>
-                  <Theme.TD>
+                  </td>
+                  <td>
                     <LinkContainer to={`orders/${order._id}`}>
                       <Button variant='light' className='btn-sm'>
                         Details
                       </Button>
                     </LinkContainer>
-                  </Theme.TD>
+                  </td>
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </Theme.Table>
         )}
       </Col>
     </Row>

@@ -103,7 +103,7 @@ const OrderListView = ({ history }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Theme.Table striped bordered hover responsive className='tale-sm'>
+        <Theme.Table bordered hover responsive className='tale-sm'>
           <thead>
             <tr>
               <th>ID</th>
@@ -117,19 +117,19 @@ const OrderListView = ({ history }) => {
             </tr>
           </thead>
           <tbody>
-            {console.log(
-              'RENDER ordersToEdit: ',
-              ordersToEdit.filter(
-                (x) =>
-                  x.DeliveredChanged ||
-                  x.PaidChanged ||
-                  x.CancelledChanged ||
-                  x.ShippedChanged
-              )
-            )}
             {ordersToEdit &&
               ordersToEdit.map((order, key) => (
-                <tr key={key}>
+                <tr
+                  key={key}
+                  style={
+                    order.cancelledAt
+                      ? {
+                          backgroundColor: 'rgba(136,136,136, 0.2)',
+                          color: 'var(--gray-dark)',
+                        }
+                      : {}
+                  }
+                >
                   <td>
                     <LinkContainer to={`/orders/${order._id}`}>
                       <Button variant='light' className='btn-sm'>

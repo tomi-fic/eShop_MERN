@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import OrderMessageContainer from '../components/containers/OrderMessageContainer'
 import { getOrderDetails, payOrder } from '../actions/orderActions.js'
 import { ORDER_PAY_RESET, CART_RESET } from '../constants/reducerConstants.js'
+import Theme from '../utils/styledTheme.js'
 
 const OrderView = ({ history, match }) => {
   const dispatch = useDispatch()
@@ -56,12 +58,15 @@ const OrderView = ({ history, match }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <div>
-      <h1>Order {match.params.id}</h1>
       <Row>
         <Col md={8}>
+          <h2 style={{ padding: '.75rem 1.25rem' }}>Order {match.params.id}</h2>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <Theme.DivLeft>
+                <h2 style={{ marginRight: '1rem' }}>Shipping</h2>
+                <OrderMessageContainer order={order} type={'Shipping'} />
+              </Theme.DivLeft>
               <p>
                 <strong>Name: </strong>
                 {order.user.name}
@@ -74,25 +79,16 @@ const OrderView = ({ history, match }) => {
                 {'  '}
                 {order.shippingAddress.city}, {order.shippingAddress.country}
               </p>
-              {order.isDelivered ? (
-                <Message variant='success'>
-                  Delivered on {order.deliveredAt}
-                </Message>
-              ) : (
-                <Message variant='danger'>Order is not delivered</Message>
-              )}
             </ListGroup.Item>
             <ListGroup.Item>
-              <h2>Payment Method</h2>
+              <Theme.DivLeft>
+                <h2 style={{ marginRight: '1rem' }}>Payment</h2>
+                <OrderMessageContainer order={order} type={'Payment'} />
+              </Theme.DivLeft>
               <p>
                 <strong>Method: </strong>
                 {order.paymentMethod}
               </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
-              ) : (
-                <Message variant='danger'>Order is not paid</Message>
-              )}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Order Items</h2>
@@ -127,6 +123,12 @@ const OrderView = ({ history, match }) => {
           </ListGroup>
         </Col>
         <Col md={4}>
+          <Row style={{ padding: '.75rem 1.25rem' }}>
+            <Theme.DivCenter>
+              <h3 style={{ margin: '3px' }}>Status:</h3>
+              <OrderMessageContainer order={order} type={'Status'} />
+            </Theme.DivCenter>
+          </Row>
           <Card>
             <ListGroup variant='flush'>
               <ListGroup.Item>
@@ -160,26 +162,45 @@ const OrderView = ({ history, match }) => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-              {!order.isPaid && userInfo && !userInfo.isAdmin && (
+              {!order.isPaid &&
+                !order.isCancelled &&
+                userInfo &&
+                !userInfo.isAdmin && (
+                  <ListGroup.Item>
+                    {isPendingPay && <Loader />}
+                    {!isSdkReady ? (
+                      <Loader />
+                    ) : (
+                      <PayPalButton
+                        amount={order.totalPrice}
+                        onSuccess={onSuccessPaymentHandler}
+                        options={{
+                          currency: 'EUR',
+                        }}
+                      />
+                    )}
+                  </ListGroup.Item>
+                )}
+
+              {error && (
                 <ListGroup.Item>
-                  {isPendingPay && <Loader />}
-                  {!isSdkReady ? (
-                    <Loader />
-                  ) : (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      onSuccess={onSuccessPaymentHandler}
-                      options={{
-                        currency: 'EUR',
-                      }}
-                    />
-                  )}
+                  <Message variant='danger'>{error}</Message>
                 </ListGroup.Item>
               )}
 
-              <ListGroup.Item>
-                {error && <Message variant='danger'>{error}</Message>}
-              </ListGroup.Item>
+              {!order.isCancelled && userInfo && !userInfo.isAdmin && (
+                <ListGroup.Item>
+                  <Theme.DivCenter>
+                    <Button
+                      variant='secondary'
+                      disabled={order.isShipped && true}
+                      onClick={() => console.log('order cancelled')}
+                    >
+                      Cancel Order
+                    </Button>
+                  </Theme.DivCenter>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>

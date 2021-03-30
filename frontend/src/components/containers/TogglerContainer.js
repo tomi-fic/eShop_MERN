@@ -9,7 +9,9 @@ const TogglerContainer = ({ order, index, setToggleAction, action }) => {
 
   return (
     <td
-      style={order[isPaidChanged] === true ? { border: '2px solid blue' } : {}}
+      style={
+        order[isPaidChanged] === true ? { border: '2px solid var(--blue)' } : {}
+      }
     >
       {order[isPaid] ? (
         <Theme.DivCenter>
@@ -18,7 +20,7 @@ const TogglerContainer = ({ order, index, setToggleAction, action }) => {
           </span>
           <Toggler
             checked={order[isPaid]}
-            disabled={!order[isPaidChanged] && true}
+            disabled={!order[isPaidChanged] && order.cancelledAt && true}
             onToggle={() => setToggleAction(action, index)}
           />
         </Theme.DivCenter>
@@ -27,6 +29,7 @@ const TogglerContainer = ({ order, index, setToggleAction, action }) => {
           <Toggler
             checked={order[isPaid]}
             onToggle={() => setToggleAction(action, index)}
+            disabled={order.cancelledAt && true}
           />
         </Theme.DivCenter>
       )}
