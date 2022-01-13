@@ -14,6 +14,9 @@ import {
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_CREATE_FAIL,
+  PRODUCT_REVIEW_CREATE_REQUEST,
+  PRODUCT_REVIEW_CREATE_SUCCESS,
+  PRODUCT_REVIEW_CREATE_FAIL,
 } from '../constants/reducerConstants.js'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -102,6 +105,20 @@ export const productHandlerReducer = (state = {}, action) => {
         createSuccess: true,
       }
     case PRODUCT_CREATE_FAIL:
+      return {
+        isPending: false,
+        error: action.payload,
+      }
+    case PRODUCT_REVIEW_CREATE_REQUEST:
+      return {
+        isPending: true,
+      }
+    case PRODUCT_REVIEW_CREATE_SUCCESS:
+      return {
+        isPending: false,
+        success: true,
+      }
+    case PRODUCT_REVIEW_CREATE_FAIL:
       return {
         isPending: false,
         error: action.payload,

@@ -15,8 +15,11 @@ import {
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_CREATE_FAIL,
+  PRODUCT_REVIEW_CREATE_REQUEST,
+  PRODUCT_REVIEW_CREATE_SUCCESS,
+  PRODUCT_REVIEW_CREATE_FAIL,
 } from '../constants/reducerConstants.js'
-import { getHeadersConfig } from '../utils/getHeadersConfig.js'
+import { getHeadersConfig } from '../utils/setHeadersUtils.js'
 
 export const listProducts = () => async (dispatch) => {
   try {
@@ -115,6 +118,34 @@ export const createProduct = (product) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const createProductReview = (id, review) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: PRODUCT_REVIEW_CREATE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+    await axios.post(
+      `/products/${id}/reviews`,
+      review,
+      getHeadersConfig(userInfo.token)
+    )
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_SUCCESS,
+    })
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

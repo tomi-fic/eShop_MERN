@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { updateUserProfile } from '../actions/userActions.js'
 import { getUserOrders } from '../actions/orderActions.js'
 import Theme from '../utils/styledTheme'
+import { getFormattedDatetime, getFormattedDate } from '../utils/formatUtils'
 
 const ProfileView = ({ location, history }) => {
   const [email, setEmail] = useState('')
@@ -134,7 +135,7 @@ const ProfileView = ({ location, history }) => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>DATE</th>
+                <th>CREATED</th>
                 <th>TOTAL</th>
                 <th>PAID</th>
                 <th>SHIPPED</th>
@@ -156,12 +157,12 @@ const ProfileView = ({ location, history }) => {
                   }
                 >
                   <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{getFormattedDatetime(order.createdAt)}</td>
                   <td>{order.totalPrice.toFixed(2)}€</td>
                   <td>
                     {order.isPaid ? (
                       <Button variant='success' className='btn-sm' disabled>
-                        {order.paidAt.substring(0, 10)}
+                        {getFormattedDate(order.paidAt)}
                       </Button>
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
@@ -170,7 +171,7 @@ const ProfileView = ({ location, history }) => {
                   <td>
                     {order.isShipped ? (
                       <Button variant='success' className='btn-sm' disabled>
-                        {order.shippedAt.substring(0, 10)}
+                        {getFormattedDate(order.shippedAt)}
                       </Button>
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>
@@ -179,7 +180,7 @@ const ProfileView = ({ location, history }) => {
                   <td>
                     {order.isDelivered ? (
                       <Button variant='success' className='btn-sm' disabled>
-                        {order.deliveredAt.substring(0, 10)}
+                        {getFormattedDate(order.deliveredAt)}
                       </Button>
                     ) : (
                       <i className='fas fa-times' style={{ color: 'red' }}></i>

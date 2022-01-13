@@ -5,7 +5,7 @@ import {
   UPLOAD_IMG_RESET,
 } from '../constants/reducerConstants.js'
 import axios from 'axios'
-import { getHeaderFileConfig } from '../utils/getHeadersConfig'
+import { getHeaderFileConfig } from '../utils/setHeadersUtils'
 
 export const uploadImg = (img) => async (dispatch, getState) => {
   try {

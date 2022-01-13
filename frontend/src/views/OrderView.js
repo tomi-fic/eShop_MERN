@@ -137,19 +137,19 @@ const OrderView = ({ history, match }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>{order.itemsPrice}€</Col>
+                  <Col>{order.itemsPrice.toFixed(2)}€</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>{order.shippingPrice}€</Col>
+                  <Col>{order.shippingPrice.toFixed(2)}€</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>{order.taxPrice}€</Col>
+                  <Col>{order.taxPrice.toFixed(2)}€</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -158,7 +158,7 @@ const OrderView = ({ history, match }) => {
                     <strong>TOTAL</strong>
                   </Col>
                   <Col>
-                    <strong>{order.totalPrice}€</strong>
+                    <strong>{order.totalPrice.toFixed(2)}€</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
